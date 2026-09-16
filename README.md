@@ -1,40 +1,79 @@
-# RushBox Delivery App
+# RushBox
 
-A modern, mobile-first delivery service application built with HTML, CSS (Tailwind), JavaScript, and Firebase.
+Two products, one app:
 
-## Tech Stack
-- **Frontend**: HTML5, CSS3, Tailwind CSS, JavaScript ES6+
-- **Backend**: Firebase (Auth, Firestore, Storage, Functions)
-- **PWA**: Service Workers, Web App Manifest
+- **RushBox Groceries** — Blinkit-style dark store model. We own the inventory and the warehouses; groceries and medicine in ~30 minutes.
+- **RushBox Move** — inDrive-style marketplace. Post a job, nearby transporters bid, you pick the price. Three job types: **Cargo**, **Parcel**, and **Buy-For-Me** (a runner buys from a shop you name and delivers it).
 
-## Project Structure
-```
-rushbox-delivery-app/
-├── index.html              # Main entry point
-├── manifest.json           # PWA manifest
-├── sw.js                   # Service worker
-├── package.json            # Dependencies
-├── src/
-│   ├── pages/              # HTML pages
-│   ├── components/         # Reusable components
-│   ├── styles/            # CSS files
-│   ├── js/                # JavaScript modules
-│   ├── services/          # API and Firebase services
-│   └── utils/             # Helper utilities
-├── assets/                # Images, icons, logos
-└── config/                # Configuration files
+See [`docs/PROJECT_OVERVIEW.md`](docs/PROJECT_OVERVIEW.md) for the full feature list.
+
+## Stack
+
+Next.js 15 (App Router) · TypeScript · Tailwind v4 · Supabase · installable PWA.
+
+## Running it
+
+```bash
+npm install
+cp .env.example .env.local   # fill in your values
+npm run dev                  # http://localhost:3000
 ```
 
-## Getting Started
-1. Install dependencies: `npm install`
-2. Setup Firebase configuration
-3. Run development server: `npm run dev`
-4. Build for production: `npm run build`
+The app ships with `NEXT_PUBLIC_USE_MOCK_DATA=true`, so it runs entirely on local
+mock data with no backend. Set it to `false` once Supabase is reachable.
 
-## Features
-- Mobile-first responsive design
-- Firebase authentication
-- Real-time product catalog
-- Shopping cart functionality
-- Order tracking
-- PWA capabilities
+## Surfaces
+
+| Route | Who it's for |
+|---|---|
+| `/` `/login` `/verify` | Welcome and phone + OTP sign-in |
+| `/home` `/groceries` `/product/[id]` `/cart` `/checkout` `/orders` | Customer — groceries |
+| `/move` `/move/new/[type]` `/move/[id]` | Customer — cargo, parcels, Buy-For-Me |
+| `/profile` `/wallet` `/addresses` `/support` | Customer — account |
+| `/driver` | Transporter — job feed, bidding, active job, earnings, verification |
+| `/ops` | Dark store — fulfilment queue, inventory, riders |
+| `/admin` | HQ — analytics, orders, transporters, customers, inventory, pricing, disputes |
+
+The login screen has demo shortcuts into the transporter, ops and admin surfaces.
+In production these are gated by role and never shown to a customer.
+
+## Where things live
+
+```
+app/          routes, grouped by surface
+components/   shared UI (ui.tsx, icons, charts, DashShell, MapView)
+lib/
+  types.ts    domain model
+  mock/       seed data — swap for Supabase queries
+  store.tsx   client state (session, cart, jobs) in localStorage
+  supabase.ts client factory, returns null while in mock mode
+legacy/       the original vanilla HTML/Firebase scaffold, kept for reference
+```
+
+## Current state
+
+Front end is complete across all five surfaces. Backend is deliberately light:
+
+- **Auth is mocked.** Any 6-digit code signs you in. Real phone OTP is not wired up.
+- **Data is mocked.** Everything reads from `lib/mock/` and persists to
+  `localStorage`. No Supabase calls are made.
+- **Bids are simulated.** Posting a Move job schedules fake offers a few seconds
+  later so the bidding screen behaves realistically. Replace with a Supabase
+  realtime subscription.
+- **Maps are a stylised placeholder** (`components/MapView.tsx`), not a real map.
+
+## Before going live
+
+1. **Put TLS on the Supabase host.** The API is currently plain `http://`, and
+   browsers block plain-http calls from an https page as mixed content — the
+   deployed app cannot talk to it until this is fixed.
+2. **Rotate the service role key** if it has ever been shared. It bypasses row-level
+   security entirely. It belongs in server-side env vars only — never in the
+   browser, never prefixed `NEXT_PUBLIC_`, never committed.
+3. Turn on row-level security on every table before the anon key touches real data.
+
+## PWA
+
+Installable on Android via the browser's "Add to Home Screen" — it opens
+fullscreen with its own icon. A packaged APK (via Bubblewrap) wraps the deployed
+URL, so deploy first, then wrap if you want a Play Store build.
