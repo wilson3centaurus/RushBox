@@ -72,8 +72,8 @@ Front end is complete across all five surfaces. Backend is deliberately light:
    browser, never prefixed `NEXT_PUBLIC_`, never committed.
 3. Turn on row-level security on every table before the anon key touches real data.
 
-## PWA
+## Deploying
 
-Installable on Android via the browser's "Add to Home Screen" — it opens
-fullscreen with its own icon. A packaged APK (via Bubblewrap) wraps the deployed
-URL, so deploy first, then wrap if you want a Play Store build.
+See [`docs/DEPLOY.md`](docs/DEPLOY.md) — Vercel takes the repo with no config,
+and the same doc covers installing it as an app on Android and wrapping it into
+an APK afterwards.
