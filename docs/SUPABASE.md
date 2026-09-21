@@ -38,6 +38,23 @@ from an https page as mixed content, so **the deployed app cannot talk to it at
 all** until this is done. Caddy is the shortest path — it gets and renews the
 certificate on its own.
 
+### One command
+
+`scripts/setup-tls.sh` does everything in this section: finds the Supabase
+gateway port, installs Caddy, writes the config, opens 80 and 443, and waits for
+the certificate. It is safe to re-run, backs up an existing Caddyfile, and will
+not enable a firewall that is currently off.
+
+```bash
+sudo bash scripts/setup-tls.sh
+```
+
+It exits non-zero with the specific reason if the certificate doesn't arrive —
+almost always port 80 closed at the provider's firewall, or DNS not pointing at
+the box.
+
+### Or by hand
+
 ```bash
 # Install Caddy (Debian/Ubuntu)
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
