@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons";
 import { ProductGrid } from "@/components/product";
 import { CartBar } from "@/components/CartBar";
 import { PRODUCTS, CATEGORIES } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 
 const SUGGESTIONS = ["Bread", "Milk", "Mealie meal", "Paracetamol", "Mazoe", "Eggs"];
 
@@ -81,9 +82,9 @@ export default function Search() {
                   className="flex flex-col items-center gap-1.5"
                 >
                   <span
-                    className={`w-full aspect-square rounded-2xl ${c.color} flex items-center justify-center text-2xl`}
+                    className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${c.tile} flex items-center justify-center`}
                   >
-                    {c.emoji}
+                    <Emoji char={c.emoji} className="w-7 h-7" />
                   </span>
                   <span className="text-[10px] font-medium text-ink-600 leading-tight text-center">
                     {c.name}

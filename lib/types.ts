@@ -20,6 +20,8 @@ export type Product = {
   store: string;
   tags?: ("bestseller" | "new" | "deal")[];
   wasPrice?: number;
+  /** Photo URL. Falls back to the emoji illustration when absent or broken. */
+  image?: string;
 };
 
 export type CartLine = { productId: string; qty: number };

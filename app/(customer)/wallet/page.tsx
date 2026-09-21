@@ -4,6 +4,7 @@ import { Badge, Button, Card, TopBar } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { money } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
+import { Emoji } from "@/components/Emoji";
 
 const METHODS = [
   { id: "ecocash", label: "EcoCash", sub: "+263 77 123 4567", emoji: "📱", primary: true },
@@ -50,7 +51,7 @@ export default function Wallet() {
           <Card className="divide-y divide-ink-100">
             {METHODS.map((m) => (
               <div key={m.id} className="flex items-center gap-3 p-4">
-                <span className="text-xl">{m.emoji}</span>
+                <Emoji char={m.emoji} className="w-6 h-6 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium">{m.label}</p>
                   <p className="text-[11px] text-ink-400">{m.sub}</p>

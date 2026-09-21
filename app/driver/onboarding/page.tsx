@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge, Button, Card, Field, TopBar, inputClass } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { VEHICLES } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 import type { VehicleType } from "@/lib/types";
 
 const DOCS = [
@@ -75,7 +76,7 @@ export default function Onboarding() {
                     : "border-ink-200 hover:bg-ink-50"
                 }`}
               >
-                <span className="text-2xl">{v.emoji}</span>
+                <Emoji char={v.emoji} className="w-7 h-7 mx-auto" />
                 <p className="text-[11px] font-semibold mt-1">{v.label}</p>
               </button>
             ))}

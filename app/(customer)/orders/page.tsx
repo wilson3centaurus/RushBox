@@ -7,6 +7,7 @@ import { useStore } from "@/lib/store";
 import { money, statusLabel } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
 import { productById } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 import type { GroceryStatus } from "@/lib/types";
 
 const TONE: Record<GroceryStatus, "brand" | "green" | "grey" | "red" | "blue"> = {
@@ -34,9 +35,9 @@ export default function Orders() {
                     {o.lines.slice(0, 3).map((l) => (
                       <span
                         key={l.productId}
-                        className="w-10 h-10 rounded-full bg-ink-50 border-2 border-white flex items-center justify-center text-lg"
+                        className="w-10 h-10 rounded-full bg-ink-50 border-2 border-white flex items-center justify-center"
                       >
-                        {productById(l.productId)?.emoji}
+                        <Emoji char={productById(l.productId)?.emoji ?? ""} className="w-5 h-5" />
                       </span>
                     ))}
                   </div>

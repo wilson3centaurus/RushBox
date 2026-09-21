@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button, Logo } from "@/components/ui";
+import { Button, LogoLockup } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { MobileShell } from "@/components/MobileShell";
 import { useStore } from "@/lib/store";
@@ -30,9 +30,9 @@ export default function Welcome() {
         <div className="absolute top-40 -left-24 w-72 h-72 rounded-full border border-white/10" />
 
         <div className="relative flex-1 flex flex-col justify-center animate-fade-up">
-          <Logo size="lg" />
-          <h1 className="text-5xl font-bold mt-7 tracking-tight">RushBox</h1>
-          <p className="text-white/70 text-lg mt-2 leading-snug">
+          <h1 className="sr-only">RushBox</h1>
+          <LogoLockup width={224} />
+          <p className="text-white/70 text-lg mt-5 leading-snug">
             Everything you need, delivered.
             <br />
             Everything you have, moved.

@@ -5,6 +5,7 @@ import { TopBar, Card } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { ProductGrid } from "@/components/product";
 import { CATEGORIES, PRODUCTS } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 import { CartBar } from "@/components/CartBar";
 
 export default function Groceries() {
@@ -34,9 +35,9 @@ export default function Groceries() {
               <Link key={c.slug} href={`/groceries/${c.slug}`}>
                 <Card className="p-3 flex items-center gap-3">
                   <span
-                    className={`w-11 h-11 rounded-xl ${c.color} flex items-center justify-center text-xl shrink-0`}
+                    className={`w-11 h-11 rounded-xl bg-gradient-to-br ${c.tile} flex items-center justify-center shrink-0`}
                   >
-                    {c.emoji}
+                    <Emoji char={c.emoji} className="w-6 h-6" />
                   </span>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold leading-tight">

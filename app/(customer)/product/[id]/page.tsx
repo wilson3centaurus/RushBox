@@ -8,6 +8,7 @@ import { QtyStepper, ProductGrid } from "@/components/product";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import { CATEGORIES, PRODUCTS, productById } from "@/lib/mock/data";
+import { ProductImage } from "@/components/Emoji";
 
 export default function ProductDetail({
   params,
@@ -44,9 +45,11 @@ export default function ProductDetail({
 
       <main className="pb-6">
         <div className="bg-white px-5 pt-6 pb-8 flex items-center justify-center">
-          <div className="w-44 h-44 rounded-3xl bg-ink-50 flex items-center justify-center text-7xl">
-            {product.emoji}
-          </div>
+          <ProductImage
+            product={product}
+            className="w-44 h-44 rounded-3xl"
+            art="w-24 h-24"
+          />
         </div>
 
         <div className="px-5 -mt-4 space-y-5">

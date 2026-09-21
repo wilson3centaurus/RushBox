@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Badge, Card, EmptyState, TopBar } from "@/components/ui";
+import { Badge, Card, EmptyState } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money, statusLabel } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
 import { vehicleById } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 import type { JobStatus, JobType } from "@/lib/types";
 
 const TYPES: {
@@ -67,8 +68,8 @@ export default function Move() {
           {TYPES.map((t) => (
             <Link key={t.type} href={`/move/new/${t.type}`}>
               <Card className="p-4 flex items-center gap-3.5">
-                <span className="w-12 h-12 rounded-2xl bg-ink-50 flex items-center justify-center text-2xl shrink-0">
-                  {t.emoji}
+                <span className="w-12 h-12 rounded-2xl bg-ink-50 flex items-center justify-center shrink-0">
+                  <Emoji char={t.emoji} className="w-7 h-7" />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-sm">{t.title}</p>
@@ -127,8 +128,8 @@ function JobRow({ jobId }: { jobId: string }) {
     <Link href={`/move/${job.id}`}>
       <Card className="p-4">
         <div className="flex items-start gap-3">
-          <span className="w-10 h-10 rounded-xl bg-ink-50 flex items-center justify-center text-xl shrink-0">
-            {meta?.emoji}
+          <span className="w-10 h-10 rounded-xl bg-ink-50 flex items-center justify-center shrink-0">
+            <Emoji char={meta?.emoji ?? ""} className="w-6 h-6" />
           </span>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">

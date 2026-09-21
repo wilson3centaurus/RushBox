@@ -6,6 +6,7 @@ import { QtyStepper } from "@/components/product";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import { productById } from "@/lib/mock/data";
+import { ProductImage } from "@/components/Emoji";
 
 const DELIVERY_FEE = 1.5;
 const FREE_OVER = 20;
@@ -61,9 +62,7 @@ export default function Cart() {
             if (!p) return null;
             return (
               <Card key={line.productId} className="p-3 flex items-center gap-3">
-                <span className="w-14 h-14 rounded-xl bg-ink-50 flex items-center justify-center text-2xl shrink-0">
-                  {p.emoji}
-                </span>
+                <ProductImage product={p} className="w-14 h-14 shrink-0" art="w-8 h-8" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold leading-tight">{p.name}</p>
                   <p className="text-xs text-ink-400">{p.unit}</p>

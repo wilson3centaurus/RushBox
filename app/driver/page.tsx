@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons";
 import { money } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
 import { OPEN_JOB_FEED, vehicleById } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 import type { JobType } from "@/lib/types";
 
 const TYPE_META: Record<JobType, { emoji: string; label: string }> = {
@@ -94,8 +95,8 @@ export default function DriverFeed() {
                 <Link key={job.id} href={`/driver/jobs/${job.id}`}>
                   <Card className="p-4">
                     <div className="flex items-start gap-3">
-                      <span className="w-10 h-10 rounded-xl bg-ink-50 flex items-center justify-center text-xl shrink-0">
-                        {meta.emoji}
+                      <span className="w-10 h-10 rounded-xl bg-ink-50 flex items-center justify-center shrink-0">
+                        <Emoji char={meta.emoji} className="w-6 h-6" />
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">

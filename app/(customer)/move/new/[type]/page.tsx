@@ -14,6 +14,7 @@ import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import { AREAS, SHOPS, VEHICLES } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 import type { ErrandItem, JobType, VehicleType } from "@/lib/types";
 
 const COPY: Record<JobType, { title: string; sub: string; cta: string }> = {
@@ -296,7 +297,7 @@ export default function NewJob({
                     : "border-ink-200 hover:bg-ink-50"
                 }`}
               >
-                <span className="text-2xl">{v.emoji}</span>
+                <Emoji char={v.emoji} className="w-7 h-7" />
                 <p className="text-xs font-semibold mt-1.5">{v.label}</p>
               </button>
             ))}

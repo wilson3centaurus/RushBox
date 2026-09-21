@@ -7,6 +7,7 @@ import { PageHead, TableCard } from "@/components/DashShell";
 import { BarList } from "@/components/charts";
 import { money } from "@/lib/format";
 import { CATEGORIES, DARK_STORES, PRODUCTS } from "@/lib/mock/data";
+import { ProductImage } from "@/components/Emoji";
 
 export default function AdminInventory() {
   const [store, setStore] = useState("all");
@@ -81,9 +82,7 @@ export default function AdminInventory() {
             <tr key={p.id} className="hover:bg-ink-50/60">
               <td className="px-4 py-3">
                 <div className="flex items-center gap-2.5">
-                  <span className="w-9 h-9 rounded-lg bg-ink-50 flex items-center justify-center text-lg shrink-0">
-                    {p.emoji}
-                  </span>
+                  <ProductImage product={p} className="w-9 h-9 shrink-0" art="w-5 h-5" />
                   <div className="min-w-0">
                     <p className="font-medium truncate">{p.name}</p>
                     <p className="text-[11px] text-ink-400">{p.unit}</p>

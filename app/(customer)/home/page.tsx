@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Avatar, Badge, Card } from "@/components/ui";
+import { Avatar, Badge, Card, Logo } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { CATEGORIES, PRODUCTS, productById } from "@/lib/mock/data";
+import { Emoji, ProductImage } from "@/components/Emoji";
 import { etaLabel, money, statusLabel } from "@/lib/format";
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
     <div>
       <header className="brand-gradient text-white px-5 pt-5 pb-8 safe-top rounded-b-3xl">
         <div className="flex items-center gap-3">
+          <Logo size="sm" className="mt-0.5" />
           <div className="min-w-0 flex-1">
             <p className="text-[11px] uppercase tracking-wider text-white/50 font-semibold">
               Deliver to
@@ -124,9 +126,9 @@ export default function Home() {
                 className="flex flex-col items-center gap-1.5"
               >
                 <span
-                  className={`w-full aspect-square rounded-2xl ${c.color} flex items-center justify-center text-2xl`}
+                  className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${c.tile} flex items-center justify-center`}
                 >
-                  {c.emoji}
+                  <Emoji char={c.emoji} className="w-7 h-7" />
                 </span>
                 <span className="text-[10px] font-medium text-ink-600 text-center leading-tight">
                   {c.name}
@@ -152,9 +154,7 @@ export default function Home() {
               {deals.map((p) => (
                 <Card key={p.id} className="p-3 w-36 shrink-0">
                   <div className="relative">
-                    <div className="h-20 rounded-xl bg-ink-50 flex items-center justify-center text-4xl">
-                      {p.emoji}
-                    </div>
+                    <ProductImage product={p} className="h-20" art="w-11 h-11" />
                     <Badge tone="red" className="absolute top-1 left-1">
                       Deal
                     </Badge>
@@ -192,9 +192,7 @@ export default function Home() {
             {popular.map((p) => (
               <Link key={p.id} href={`/product/${p.id}`}>
                 <Card className="p-2.5">
-                  <div className="h-16 rounded-lg bg-ink-50 flex items-center justify-center text-3xl">
-                    {p.emoji}
-                  </div>
+                  <ProductImage product={p} className="h-16" art="w-9 h-9" />
                   <p className="text-[11px] font-semibold mt-2 leading-tight line-clamp-2">
                     {p.name}
                   </p>
@@ -217,9 +215,9 @@ export default function Home() {
                     {o.lines.slice(0, 3).map((l) => (
                       <span
                         key={l.productId}
-                        className="w-9 h-9 rounded-full bg-ink-50 border-2 border-white flex items-center justify-center text-base"
+                        className="w-9 h-9 rounded-full bg-ink-50 border-2 border-white flex items-center justify-center"
                       >
-                        {productById(l.productId)?.emoji}
+                        <Emoji char={productById(l.productId)?.emoji ?? ""} className="w-5 h-5" />
                       </span>
                     ))}
                   </div>
@@ -276,7 +274,7 @@ function ServiceCard({
       href={href}
       className={`${tone} rounded-2xl p-4 active:scale-[0.98] transition-transform`}
     >
-      <span className="text-3xl">{emoji}</span>
+      <Emoji char={emoji} className="w-9 h-9" />
       <p className="font-bold text-lg mt-2 leading-none">{title}</p>
       <p className="text-[11px] opacity-70 mt-1.5 leading-tight">{sub}</p>
     </Link>
@@ -297,7 +295,7 @@ function MoveTile({
   return (
     <Link href={href}>
       <Card className="p-3 h-full">
-        <span className="text-2xl">{emoji}</span>
+        <Emoji char={emoji} className="w-7 h-7" />
         <p className="text-xs font-semibold mt-1.5">{label}</p>
         <p className="text-[10px] text-ink-400 leading-tight mt-0.5">{sub}</p>
       </Card>

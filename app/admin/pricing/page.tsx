@@ -6,6 +6,7 @@ import { Icon } from "@/components/icons";
 import { PageHead } from "@/components/DashShell";
 import { money } from "@/lib/format";
 import { VEHICLES } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 
 export default function AdminPricing() {
   const [commission, setCommission] = useState(15);
@@ -156,7 +157,7 @@ export default function AdminPricing() {
             {VEHICLES.map((v) => (
               <div key={v.id} className="rounded-xl border border-ink-100 p-3.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{v.emoji}</span>
+                  <Emoji char={v.emoji} className="w-6 h-6" />
                   <p className="text-sm font-semibold">{v.label}</p>
                 </div>
                 <p className="text-[11px] text-ink-400 mt-1.5 leading-tight">

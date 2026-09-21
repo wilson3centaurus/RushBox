@@ -8,6 +8,7 @@ import { MapView, Timeline } from "@/components/MapView";
 import { useStore } from "@/lib/store";
 import { etaLabel, money, statusLabel } from "@/lib/format";
 import { productById } from "@/lib/mock/data";
+import { ProductImage } from "@/components/Emoji";
 
 const STEPS = [
   { label: "Order placed", sub: "We received your order" },
@@ -146,9 +147,7 @@ function OrderTracking({ params }: { params: Promise<{ id: string }> }) {
                 if (!p) return null;
                 return (
                   <div key={l.productId} className="flex items-center gap-3">
-                    <span className="w-10 h-10 rounded-lg bg-ink-50 flex items-center justify-center text-lg shrink-0">
-                      {p.emoji}
-                    </span>
+                    <ProductImage product={p} className="w-10 h-10 shrink-0" art="w-6 h-6" />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium truncate">{p.name}</p>
                       <p className="text-[11px] text-ink-400">

@@ -1,19 +1,44 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Icon, type IconName } from "@/components/icons";
 
-export function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-  const box = { sm: "w-8 h-8", md: "w-12 h-12", lg: "w-20 h-20" }[size];
-  const icon = { sm: "w-4 h-4", md: "w-6 h-6", lg: "w-10 h-10" }[size];
+const MARK_RATIO = 122 / 184;
+const LOCKUP_RATIO = 193 / 282;
+
+/** The box mark on its own — orange, so it reads on both light and dark. */
+export function Logo({
+  size = "md",
+  className = "",
+}: {
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}) {
+  const w = { sm: 32, md: 50, lg: 92 }[size];
   return (
-    <div className={`${box} relative shrink-0`}>
-      <div className="absolute inset-0 rounded-[28%] bg-brand-300 rotate-12" />
-      <div className="absolute inset-0 rounded-[28%] bg-brand-400 flex items-center justify-center text-ink-900 shadow-lg shadow-brand-400/30">
-        <Icon name="zap" className={icon} />
-      </div>
-    </div>
+    <Image
+      src="/brand/mark.png"
+      alt="RushBox"
+      width={w}
+      height={Math.round(w * MARK_RATIO)}
+      priority
+      className={`shrink-0 ${className}`}
+    />
+  );
+}
+
+/** Mark plus wordmark. The wordmark is white — dark backgrounds only. */
+export function LogoLockup({ width = 200 }: { width?: number }) {
+  return (
+    <Image
+      src="/brand/logo.png"
+      alt="RushBox"
+      width={width}
+      height={Math.round(width * LOCKUP_RATIO)}
+      priority
+    />
   );
 }
 

@@ -5,6 +5,7 @@ import { Badge, Button, Card, Stat } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { PageHead } from "@/components/DashShell";
 import { productById } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 
 type Stage = "new" | "picking" | "packed" | "dispatched";
 
@@ -111,7 +112,7 @@ export default function OpsFulfilment() {
                             key={l.productId}
                             className="flex items-center gap-2 text-xs"
                           >
-                            <span>{p?.emoji}</span>
+                            <Emoji char={p?.emoji ?? ""} className="w-4 h-4 shrink-0" />
                             <span className="flex-1 truncate text-ink-600">
                               {p?.name}
                             </span>

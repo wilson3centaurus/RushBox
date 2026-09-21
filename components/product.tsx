@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Badge, Card } from "@/components/ui";
 import { Icon } from "@/components/icons";
+import { ProductImage } from "@/components/Emoji";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import type { Product } from "@/lib/types";
@@ -11,15 +12,19 @@ export function QtyStepper({
   qty,
   onChange,
   size = "md",
+  full,
 }: {
   qty: number;
   onChange: (qty: number) => void;
   size?: "sm" | "md";
+  full?: boolean;
 }) {
   const dim = size === "sm" ? "h-7 text-xs" : "h-9 text-sm";
   return (
     <div
-      className={`inline-flex items-center rounded-lg bg-brand-400 text-ink-900 font-semibold ${dim}`}
+      className={`items-center rounded-lg bg-brand-400 text-ink-900 font-semibold ${dim} ${
+        full ? "flex w-full justify-between" : "inline-flex"
+      }`}
     >
       <button
         onClick={() => onChange(qty - 1)}
@@ -48,8 +53,8 @@ export function ProductTile({ product }: { product: Product }) {
   return (
     <Card className="p-2.5 flex flex-col">
       <Link href={`/product/${product.id}`} className="block">
-        <div className="relative h-20 rounded-xl bg-ink-50 flex items-center justify-center text-4xl">
-          {product.emoji}
+        <div className="relative">
+          <ProductImage product={product} className="h-20" art="w-11 h-11" />
           {product.tags?.includes("deal") ? (
             <Badge tone="red" className="absolute top-1 left-1">
               Deal
@@ -69,26 +74,31 @@ export function ProductTile({ product }: { product: Product }) {
         <p className="text-[10px] text-ink-400">{product.unit}</p>
       </Link>
 
-      <div className="flex items-center justify-between mt-2 gap-1">
-        <div className="min-w-0">
+      {/* Stacked, not side by side: at three columns on a small phone the price
+          and the button do not fit on one line. */}
+      <div className="mt-auto pt-2">
+        <div className="flex items-baseline gap-1.5">
           <span className="text-sm font-bold">{money(product.price)}</span>
           {product.wasPrice ? (
-            <span className="block text-[10px] text-ink-400 line-through leading-none">
+            <span className="text-[10px] text-ink-400 line-through">
               {money(product.wasPrice)}
             </span>
           ) : null}
         </div>
         {outOfStock ? null : line ? (
-          <QtyStepper
-            qty={line.qty}
-            onChange={(q) => setQty(product.id, q)}
-            size="sm"
-          />
+          <div className="mt-1.5">
+            <QtyStepper
+              qty={line.qty}
+              onChange={(q) => setQty(product.id, q)}
+              size="sm"
+              full
+            />
+          </div>
         ) : (
           <button
             onClick={() => addToCart(product.id)}
             aria-label={`Add ${product.name} to cart`}
-            className="px-2.5 h-7 rounded-lg border border-brand-400 text-brand-600 text-xs font-bold hover:bg-brand-50 active:scale-95 transition"
+            className="w-full mt-1.5 h-7 rounded-lg border border-brand-400 text-brand-600 text-xs font-bold hover:bg-brand-50 active:scale-95 transition"
           >
             ADD
           </button>

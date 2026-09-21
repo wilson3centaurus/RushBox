@@ -3,6 +3,7 @@
 import { Badge, Button, Card, TopBar } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
+import { Emoji } from "@/components/Emoji";
 
 const SAVED = [
   { id: "a1", label: "Home", address: "14 Fife Ave, Harare CBD", note: "Flat 3B, blue gate", emoji: "🏠" },
@@ -32,8 +33,8 @@ export default function Addresses() {
                 onClick={() => setAddress(a.address)}
                 className={`p-4 flex items-start gap-3 ${active ? "border-brand-300 bg-brand-50/60" : ""}`}
               >
-                <span className="w-10 h-10 rounded-xl bg-ink-50 flex items-center justify-center text-lg shrink-0">
-                  {a.emoji}
+                <span className="w-10 h-10 rounded-xl bg-ink-50 flex items-center justify-center shrink-0">
+                  <Emoji char={a.emoji} className="w-5 h-5" />
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">

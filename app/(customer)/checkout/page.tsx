@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import { productById } from "@/lib/mock/data";
+import { Emoji } from "@/components/Emoji";
 
 const PAYMENTS = [
   { id: "ecocash", label: "EcoCash", sub: "+263 77 123 4567", emoji: "📱" },
@@ -121,7 +122,7 @@ export default function Checkout() {
                     : "border-ink-200 hover:bg-ink-50"
                 }`}
               >
-                <span className="text-xl">{p.emoji}</span>
+                <Emoji char={p.emoji} className="w-6 h-6 shrink-0" />
                 <span className="min-w-0 flex-1">
                   <span className="block text-sm font-semibold">{p.label}</span>
                   <span className="block text-[11px] text-ink-500">{p.sub}</span>
@@ -152,7 +153,7 @@ export default function Checkout() {
               if (!p) return null;
               return (
                 <div key={l.productId} className="flex items-center gap-2 text-sm">
-                  <span className="text-base">{p.emoji}</span>
+                  <Emoji char={p.emoji} className="w-5 h-5 shrink-0" />
                   <span className="flex-1 min-w-0 truncate text-ink-600">
                     {p.name} × {l.qty}
                   </span>

@@ -39,16 +39,16 @@ export const SHOPS = [
 ];
 
 export const CATEGORIES = [
-  { slug: "fruit-veg", name: "Fruit & Veg", emoji: "🥬", color: "bg-green-100" },
-  { slug: "dairy-eggs", name: "Dairy & Eggs", emoji: "🥚", color: "bg-yellow-100" },
-  { slug: "bakery", name: "Bakery", emoji: "🍞", color: "bg-amber-100" },
-  { slug: "meat-fish", name: "Meat & Fish", emoji: "🍗", color: "bg-red-100" },
-  { slug: "drinks", name: "Drinks", emoji: "🥤", color: "bg-sky-100" },
-  { slug: "snacks", name: "Snacks", emoji: "🍪", color: "bg-orange-100" },
-  { slug: "pantry", name: "Pantry", emoji: "🍚", color: "bg-stone-100" },
-  { slug: "household", name: "Household", emoji: "🧼", color: "bg-indigo-100" },
-  { slug: "baby", name: "Baby", emoji: "🍼", color: "bg-pink-100" },
-  { slug: "pharmacy", name: "Pharmacy", emoji: "💊", color: "bg-emerald-100" },
+  { slug: "fruit-veg", name: "Fruit & Veg", emoji: "🥬", color: "bg-green-100", tile: "from-green-50 to-green-100" },
+  { slug: "dairy-eggs", name: "Dairy & Eggs", emoji: "🥚", color: "bg-yellow-100", tile: "from-amber-50 to-yellow-100" },
+  { slug: "bakery", name: "Bakery", emoji: "🍞", color: "bg-amber-100", tile: "from-orange-50 to-amber-100" },
+  { slug: "meat-fish", name: "Meat & Fish", emoji: "🍗", color: "bg-red-100", tile: "from-rose-50 to-red-100" },
+  { slug: "drinks", name: "Drinks", emoji: "🥤", color: "bg-sky-100", tile: "from-sky-50 to-blue-100" },
+  { slug: "snacks", name: "Snacks", emoji: "🍪", color: "bg-orange-100", tile: "from-orange-50 to-orange-100" },
+  { slug: "pantry", name: "Pantry", emoji: "🍚", color: "bg-stone-100", tile: "from-stone-50 to-stone-100" },
+  { slug: "household", name: "Household", emoji: "🧼", color: "bg-indigo-100", tile: "from-indigo-50 to-indigo-100" },
+  { slug: "baby", name: "Baby", emoji: "🍼", color: "bg-pink-100", tile: "from-pink-50 to-pink-100" },
+  { slug: "pharmacy", name: "Pharmacy", emoji: "💊", color: "bg-emerald-100", tile: "from-emerald-50 to-emerald-100" },
 ];
 
 export const PRODUCTS: Product[] = [
