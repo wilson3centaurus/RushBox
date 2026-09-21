@@ -72,6 +72,14 @@ Front end is complete across all five surfaces. Backend is deliberately light:
    browser, never prefixed `NEXT_PUBLIC_`, never committed.
 3. Turn on row-level security on every table before the anon key touches real data.
 
+## Backend
+
+The schema, row-level security policies and seed live in `supabase/`, with a
+test suite asserting 18 security properties. See
+[`docs/SUPABASE.md`](docs/SUPABASE.md) for applying them and for putting TLS in
+front of the API — which has to happen before any deployed frontend can reach
+it.
+
 ## Deploying
 
 See [`docs/DEPLOY.md`](docs/DEPLOY.md) — Vercel takes the repo with no config,
