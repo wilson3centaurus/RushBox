@@ -23,8 +23,8 @@ Set these in **Project → Settings → Environment Variables**:
 | Name | Value | Notes |
 |---|---|---|
 | `NEXT_PUBLIC_USE_MOCK_DATA` | `true` | Keep `true` until Supabase is reachable |
-| `NEXT_PUBLIC_SUPABASE_URL` | your https URL | Must be `https://` — see below |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | your anon key | Safe in the browser *if* RLS is on |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://eyslfrpacrkklwqpsqll.supabase.co` | Supabase Cloud project |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | the publishable key | Public by design — safe in the browser *if* RLS is on |
 | `SUPABASE_SERVICE_ROLE_KEY` | your rotated key | Server-side only. Never prefix `NEXT_PUBLIC_` |
 
 With `NEXT_PUBLIC_USE_MOCK_DATA=true` the app never calls Supabase, so you can
@@ -70,9 +70,9 @@ the same. The APK only matters when you want a Play Store listing.
 
 ## Before real data flows
 
-1. **TLS on the Supabase host.** It is currently plain `http://`. Browsers block
-   plain-http requests from an https page as mixed content, so the deployed app
-   cannot reach it at all. Terminate TLS with Caddy or a Cloudflare tunnel.
+1. **Apply the row-level security policies** (`supabase/migrations/0002_policies.sql`).
+   Without them the anon key — which ships in the browser bundle — reads and
+   writes every table.
 2. **Rotate the service role key** if it has ever been pasted into a chat,
    ticket or screenshot. It bypasses row-level security completely.
 3. **Turn on RLS on every table.** The anon key is public by design — it ships

@@ -1,142 +1,50 @@
 # Supabase setup
 
-Two parts: put HTTPS in front of the API, then apply the schema.
+RushBox runs on **Supabase Cloud**. Nothing to host, and `*.supabase.co` is
+HTTPS by default — which is what made self-hosting painful, since a deployed
+app on https cannot call a plain-http API at all.
 
-Everything here runs on your server or in the Supabase SQL editor — the sandbox
-this was written in has no route to `api.robokorda.duckdns.org`, so none of it
-could be run for you.
-
----
-
-## 1. Rotate credentials first
-
-Before anything else, on the server:
-
-```bash
-passwd root          # the root password was shared in a chat log
-```
-
-Then in Supabase, rotate the **service role key**. It bypasses row-level
-security completely — a leaked one is equivalent to handing over the database.
-
-While you're there, consider turning off password SSH entirely:
-
-```bash
-ssh-copy-id root@api.robokorda.duckdns.org          # from your laptop, first
-sudo sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo systemctl restart ssh
-```
-
-A root password on a public host gets brute-forced within hours. Keys don't.
+Project: `eyslfrpacrkklwqpsqll` → `https://eyslfrpacrkklwqpsqll.supabase.co`
 
 ---
 
-## 2. HTTPS on the API
+## 1. Rotate the service role key
 
-The API currently answers on plain `http://`. Browsers block plain-http requests
-from an https page as mixed content, so **the deployed app cannot talk to it at
-all** until this is done. Caddy is the shortest path — it gets and renews the
-certificate on its own.
+It was pasted into a chat log. It bypasses row-level security completely — with
+it, RLS may as well not exist.
 
-### One command
+**Project Settings → API → Service role → Rotate.**
 
-`scripts/setup-tls.sh` does everything in this section: finds the Supabase
-gateway port, installs Caddy, writes the config, opens 80 and 443, and waits for
-the certificate. It is safe to re-run, backs up an existing Caddyfile, and will
-not enable a firewall that is currently off.
+Then put the new one only where a server can read it — Vercel's environment
+variables, or `.env.local`. Never with a `NEXT_PUBLIC_` prefix, which would
+compile it into the browser bundle.
 
-```bash
-sudo bash scripts/setup-tls.sh
-```
-
-It exits non-zero with the specific reason if the certificate doesn't arrive —
-almost always port 80 closed at the provider's firewall, or DNS not pointing at
-the box.
-
-### Or by hand
-
-```bash
-# Install Caddy (Debian/Ubuntu)
-sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
-  | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
-  | sudo tee /etc/apt/sources.list.d/caddy-stable.list
-sudo apt update && sudo apt install -y caddy
-```
-
-Replace `/etc/caddy/Caddyfile` with:
-
-```caddyfile
-api.robokorda.duckdns.org {
-    # Supabase's gateway. Change the port if your stack uses a different one.
-    reverse_proxy 127.0.0.1:8000
-}
-```
-
-Ports 80 and 443 must be open — Let's Encrypt verifies over port 80:
-
-```bash
-sudo ufw allow 80,443/tcp
-sudo systemctl reload caddy
-sudo journalctl -u caddy -n 30 --no-pager     # watch the certificate be issued
-```
-
-Verify from your laptop, not the server:
-
-```bash
-curl -I https://api.robokorda.duckdns.org
-```
-
-A `200` or `401` means TLS is working. A certificate error means Let's Encrypt
-couldn't reach port 80 — check the firewall and that DuckDNS points at this box.
-
-### Close the plain-http port
-
-Caddy now reaches Supabase over localhost, so nothing else should:
-
-```bash
-sudo ufw deny 8000/tcp
-```
-
-### Tell Supabase its own URL
-
-In your Supabase `.env`, set the external URL to the https one, then restart —
-otherwise magic links and auth redirects still point at `http://` and break the
-same way:
-
-```env
-API_EXTERNAL_URL=https://api.robokorda.duckdns.org
-SITE_URL=https://rushbox.vercel.app
-```
+The **publishable / anon key needs no protection**. It is designed to be
+public and ships in the bundle; the policies in `0002_policies.sql` are the
+actual protection.
 
 ---
 
-## 3. Apply the schema
+## 2. Apply the schema
 
-In order. `0001` and `0002` are required; `0003` is demo data.
+**SQL Editor → New query**, then paste and run each in order:
 
 | File | What it does |
 |---|---|
 | `supabase/migrations/0001_schema.sql` | Tables, enums, triggers |
 | `supabase/migrations/0002_policies.sql` | Row-level security — **not optional** |
-| `supabase/migrations/0003_seed.sql` | Categories, stores and 43 products |
+| `supabase/migrations/0003_seed.sql` | Categories, 3 stores, 43 products |
 
-Paste each into the Supabase SQL editor, or:
+`0002` is the one that matters. Without it every table is wide open to anyone
+holding the anon key, which is everyone.
 
-```bash
-psql "$DATABASE_URL" -f supabase/migrations/0001_schema.sql
-psql "$DATABASE_URL" -f supabase/migrations/0002_policies.sql
-psql "$DATABASE_URL" -f supabase/migrations/0003_seed.sql   # optional
-```
-
-The seed is an upsert — re-running it updates prices and stock rather than
-duplicating products.
+The seed is an upsert — re-run it to update prices and stock rather than
+duplicating rows.
 
 ### Make yourself an admin
 
-Every new signup is a `customer`. Users cannot change their own role (a trigger
-reverts it), so promote yourself from the SQL editor, which runs as the service
+Every signup is a `customer`, and users cannot change their own role (a trigger
+reverts it). Promote yourself from the SQL editor, which runs as the service
 role:
 
 ```sql
@@ -145,14 +53,15 @@ update profiles set role = 'admin' where phone = '+263771234567';
 
 ---
 
-## 4. Check the policies hold
+## 3. Check the policies hold
 
-`supabase/tests/rls_test.sql` asserts 18 security properties — that one customer
-cannot read another's orders, that a transporter cannot see rival bids or bid
-while unverified, that nobody can promote themselves to admin, and that an
-anonymous visitor can browse the catalogue but reach no customer data.
+`supabase/tests/rls_test.sql` asserts 18 security properties: that one customer
+cannot read another's orders or wallet, that a transporter cannot see rival
+bids or bid while unverified, that nobody can promote themselves to admin, and
+that an anonymous visitor can browse the catalogue but reach no customer data.
 
-Run it against a scratch database, never production — it writes fixture rows:
+It writes fixture rows, so **never run it against production**. Use a branch
+database (Supabase → Branches) or a local Postgres:
 
 ```bash
 createdb rbx_test
@@ -162,36 +71,37 @@ psql -d rbx_test -f supabase/tests/rls_test.sql
 ```
 
 It prints `ALL RLS TESTS PASSED`, or raises on the first property that breaks.
-Re-run it whenever you touch a policy.
+Re-run it whenever you touch a policy — it has already caught two real bugs.
 
 ---
 
-## 5. Turn on phone auth
+## 4. Turn on phone auth
 
-**Authentication → Providers → Phone.** You need an SMS provider — Twilio,
-Vonage, or MessageBird. Until one is connected, the app's login screen stays in
-demo mode and accepts any six digits.
+**Authentication → Providers → Phone.** Needs an SMS provider — Twilio, Vonage
+or MessageBird. Until one is connected the login screen stays in demo mode and
+accepts any six digits.
 
 Zimbabwe numbers are `+263`; the login screen already formats them.
 
+Set **Authentication → URL Configuration → Site URL** to the deployed Vercel
+URL, otherwise auth redirects bounce to localhost.
+
 ---
 
-## 6. Point the app at it
+## 5. Point the app at it
 
-In Vercel (or `.env.local`):
+In Vercel (Settings → Environment Variables) and in `.env.local`:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://api.robokorda.duckdns.org
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>
+NEXT_PUBLIC_SUPABASE_URL=https://eyslfrpacrkklwqpsqll.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
 NEXT_PUBLIC_USE_MOCK_DATA=false
-SUPABASE_SERVICE_ROLE_KEY=<rotated key — server only, never NEXT_PUBLIC_>
+SUPABASE_SERVICE_ROLE_KEY=<the rotated one>
 ```
 
 Flipping `NEXT_PUBLIC_USE_MOCK_DATA` to `false` makes `getSupabase()` return a
-real client. The screens still read from `lib/mock/` — swapping those reads for
-Supabase queries, table by table, is the next piece of work. Do it one surface
-at a time and keep the mock flag working, so the team can keep building UI while
-the backend lands.
+real client instead of null.
 
-The anon key is *designed* to be public — it ships in the browser bundle. The
-policies in `0002` are what protect the data, which is why step 4 matters.
+The screens still read from `lib/mock/`. Swapping those for Supabase queries is
+the next piece of work — do it one surface at a time and keep the mock flag
+working, so the team can keep building UI while the backend lands.

@@ -64,21 +64,18 @@ Front end is complete across all five surfaces. Backend is deliberately light:
 
 ## Before going live
 
-1. **Put TLS on the Supabase host.** The API is currently plain `http://`, and
-   browsers block plain-http calls from an https page as mixed content — the
-   deployed app cannot talk to it until this is fixed.
-2. **Rotate the service role key** if it has ever been shared. It bypasses row-level
-   security entirely. It belongs in server-side env vars only — never in the
-   browser, never prefixed `NEXT_PUBLIC_`, never committed.
-3. Turn on row-level security on every table before the anon key touches real data.
+1. **Apply `supabase/migrations/0002_policies.sql`.** The anon key is public by
+   design — it ships in the browser bundle. Row-level security is the only thing
+   protecting the data behind it.
+2. **Rotate the service role key** if it has ever been shared. It bypasses RLS
+   entirely. Server-side env vars only — never in the browser, never prefixed
+   `NEXT_PUBLIC_`, never committed.
 
 ## Backend
 
-The schema, row-level security policies and seed live in `supabase/`, with a
-test suite asserting 18 security properties. See
-[`docs/SUPABASE.md`](docs/SUPABASE.md) for applying them and for putting TLS in
-front of the API — which has to happen before any deployed frontend can reach
-it.
+Supabase Cloud. The schema, row-level security policies and seed live in
+`supabase/`, with a test suite asserting 18 security properties. See
+[`docs/SUPABASE.md`](docs/SUPABASE.md).
 
 ## Deploying
 
