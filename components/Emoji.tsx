@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import { emojiSrc } from "@/lib/emoji";
 import type { Product } from "@/lib/types";
-import { CATEGORIES } from "@/lib/mock/data";
 
 /**
  * Bundled vector art rather than the system emoji font, so a tomato looks the
@@ -56,8 +56,9 @@ export function ProductImage({
   art?: string;
 }) {
   const [broken, setBroken] = useState(false);
+  const { categories } = useStore();
   const tint =
-    CATEGORIES.find((c) => c.slug === product.category)?.tile ??
+    categories.find((c) => c.slug === product.category)?.tile ??
     "from-ink-50 to-ink-100";
 
   if (product.image && !broken) {

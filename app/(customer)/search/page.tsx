@@ -1,26 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
 import { EmptyState } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { ProductGrid } from "@/components/product";
 import { CartBar } from "@/components/CartBar";
-import { PRODUCTS, CATEGORIES } from "@/lib/mock/data";
 import { Emoji } from "@/components/Emoji";
 
 const SUGGESTIONS = ["Bread", "Milk", "Mealie meal", "Paracetamol", "Mazoe", "Eggs"];
 
 export default function Search() {
+  const { products, categories } = useStore();
   const [q, setQ] = useState("");
   const router = useRouter();
 
   const term = q.trim().toLowerCase();
   const results = term
-    ? PRODUCTS.filter(
+    ? products.filter(
         (p) =>
           p.name.toLowerCase().includes(term) ||
-          CATEGORIES.find((c) => c.slug === p.category)
+          categories.find((c) => c.slug === p.category)
             ?.name.toLowerCase()
             .includes(term),
       )
@@ -75,7 +76,7 @@ export default function Search() {
               Browse categories
             </h2>
             <div className="grid grid-cols-4 gap-3 mt-3">
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <button
                   key={c.slug}
                   onClick={() => router.push(`/groceries/${c.slug}`)}

@@ -7,7 +7,6 @@ import { Icon } from "@/components/icons";
 import { QtyStepper, ProductGrid } from "@/components/product";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
-import { CATEGORIES, PRODUCTS, productById } from "@/lib/mock/data";
 import { ProductImage } from "@/components/Emoji";
 
 export default function ProductDetail({
@@ -16,7 +15,7 @@ export default function ProductDetail({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { cart, addToCart, setQty } = useStore();
+  const { cart, addToCart, setQty, products, categories, productById } = useStore();
   const product = productById(id);
 
   if (!product) {
@@ -34,8 +33,8 @@ export default function ProductDetail({
   }
 
   const line = cart.find((l) => l.productId === product.id);
-  const category = CATEGORIES.find((c) => c.slug === product.category);
-  const related = PRODUCTS.filter(
+  const category = categories.find((c) => c.slug === product.category);
+  const related = products.filter(
     (p) => p.category === product.category && p.id !== product.id,
   ).slice(0, 3);
 

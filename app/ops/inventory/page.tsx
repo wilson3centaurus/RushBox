@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import { Badge, Button, Card, Stat } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { PageHead, TableCard } from "@/components/DashShell";
 import { money } from "@/lib/format";
-import { CATEGORIES, PRODUCTS } from "@/lib/mock/data";
 import { ProductImage } from "@/components/Emoji";
 
 export default function OpsInventory() {
+  const { products, categories } = useStore();
   const [q, setQ] = useState("");
   const [only, setOnly] = useState<"all" | "low">("all");
 
-  const rows = PRODUCTS.filter((p) => p.store === "ds-msasa")
+  const rows = products.filter((p) => p.store === "ds-msasa")
     .filter((p) => (only === "low" ? p.stock < 20 : true))
     .filter((p) => p.name.toLowerCase().includes(q.trim().toLowerCase()));
 
@@ -36,7 +37,7 @@ export default function OpsInventory() {
         <Stat label="Stock value" value={money(value)} icon="wallet" tone="green" />
         <Stat
           label="Low stock"
-          value={String(PRODUCTS.filter((p) => p.stock < 20).length)}
+          value={String(products.filter((p) => p.stock < 20).length)}
           icon="bell"
           tone="red"
         />
@@ -83,7 +84,7 @@ export default function OpsInventory() {
                 </div>
               </td>
               <td className="px-4 py-3 text-ink-500">
-                {CATEGORIES.find((c) => c.slug === p.category)?.name}
+                {categories.find((c) => c.slug === p.category)?.name}
               </td>
               <td className="px-4 py-3 font-medium">{money(p.price)}</td>
               <td className="px-4 py-3 tabular-nums font-medium">{p.stock}</td>

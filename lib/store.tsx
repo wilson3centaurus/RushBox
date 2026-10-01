@@ -14,13 +14,19 @@ import {
   GROCERY_ORDERS,
   MOVE_JOBS,
   TRANSPORTERS,
-  productById,
 } from "@/lib/mock/data";
+import {
+  INITIAL_CATALOGUE,
+  loadCatalogue,
+  type Catalogue,
+} from "@/lib/data/catalogue";
 import type {
   Bid,
   CartLine,
+  Category,
   GroceryOrder,
   MoveJob,
+  Product,
   Role,
   User,
 } from "@/lib/types";
@@ -47,6 +53,14 @@ type Store = PersistedState & {
   ready: boolean;
   cartCount: number;
   cartTotal: number;
+  /** Catalogue comes from Supabase when configured, otherwise the mock data. */
+  categories: Category[];
+  products: Product[];
+  catalogueLoading: boolean;
+  catalogueError: string | null;
+  productById: (id: string) => Product | undefined;
+  productsByCategory: (slug: string) => Product[];
+  categoryBySlug: (slug: string) => Category | undefined;
   signIn: (phone: string, role: Role) => void;
   signOut: () => void;
   addToCart: (productId: string, qty?: number) => void;
@@ -95,6 +109,9 @@ function simulatedBidsFor(job: MoveJob): Bid[] {
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<PersistedState>(initialState);
   const [ready, setReady] = useState(false);
+  const [catalogue, setCatalogue] = useState<Catalogue>(INITIAL_CATALOGUE);
+  const [catalogueLoading, setCatalogueLoading] = useState(true);
+  const [catalogueError, setCatalogueError] = useState<string | null>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
@@ -120,6 +137,42 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const pending = timers.current;
     return () => pending.forEach(clearTimeout);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadCatalogue()
+      .then((next) => {
+        if (cancelled) return;
+        setCatalogue(next);
+        setCatalogueError(null);
+      })
+      .catch((err: unknown) => {
+        // Keep the mock catalogue on screen rather than emptying the shop.
+        if (cancelled) return;
+        setCatalogueError(err instanceof Error ? err.message : String(err));
+      })
+      .finally(() => {
+        if (!cancelled) setCatalogueLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const productById = useCallback(
+    (id: string) => catalogue.products.find((p) => p.id === id),
+    [catalogue.products],
+  );
+
+  const productsByCategory = useCallback(
+    (slug: string) => catalogue.products.filter((p) => p.category === slug),
+    [catalogue.products],
+  );
+
+  const categoryBySlug = useCallback(
+    (slug: string) => catalogue.categories.find((c) => c.slug === slug),
+    [catalogue.categories],
+  );
 
   const signIn = useCallback((phone: string, role: Role) => {
     setState((s) => ({
@@ -167,7 +220,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const p = productById(line.productId);
         return sum + (p ? p.price * line.qty : 0);
       }, 0),
-    [state.cart],
+    [state.cart, productById],
   );
 
   const cartCount = useMemo(
@@ -197,7 +250,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       return { ...s, cart: [], orders: [order, ...s.orders] };
     });
     return order;
-  }, []);
+  }, [productById]);
 
   const postJob = useCallback(
     (input: Omit<MoveJob, "id" | "createdAt" | "status" | "bids">): MoveJob => {
@@ -254,6 +307,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     ready,
     cartCount,
     cartTotal,
+    categories: catalogue.categories,
+    products: catalogue.products,
+    catalogueLoading,
+    catalogueError,
+    productById,
+    productsByCategory,
+    categoryBySlug,
     signIn,
     signOut,
     addToCart,

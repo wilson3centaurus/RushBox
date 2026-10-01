@@ -108,11 +108,34 @@ export function ProductTile({ product }: { product: Product }) {
   );
 }
 
-export function ProductGrid({ products }: { products: Product[] }) {
+export function ProductGrid({
+  products,
+  loading,
+}: {
+  products: Product[];
+  loading?: boolean;
+}) {
+  if (loading && !products.length) return <ProductGridSkeleton />;
+
   return (
     <div className="grid grid-cols-3 gap-3">
       {products.map((p) => (
         <ProductTile key={p.id} product={p} />
+      ))}
+    </div>
+  );
+}
+
+export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-3 gap-3" aria-hidden="true">
+      {Array.from({ length: count }).map((_, i) => (
+        <Card key={i} className="p-2.5">
+          <div className="h-20 rounded-xl bg-ink-100 animate-pulse" />
+          <div className="h-3 rounded bg-ink-100 animate-pulse mt-2.5" />
+          <div className="h-3 w-2/3 rounded bg-ink-100 animate-pulse mt-1.5" />
+          <div className="h-7 rounded-lg bg-ink-100 animate-pulse mt-3" />
+        </Card>
       ))}
     </div>
   );

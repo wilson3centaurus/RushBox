@@ -4,20 +4,20 @@ import Link from "next/link";
 import { Avatar, Badge, Card, Logo } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
-import { CATEGORIES, PRODUCTS, productById } from "@/lib/mock/data";
 import { Emoji, ProductImage } from "@/components/Emoji";
 import { etaLabel, money, statusLabel } from "@/lib/format";
 
 export default function Home() {
-  const { user, address, orders, jobs, addToCart } = useStore();
+  const { user, address, orders, jobs, addToCart, products, categories, productById } =
+    useStore();
   const activeOrder = orders.find(
     (o) => o.status !== "delivered" && o.status !== "cancelled",
   );
   const activeJob = jobs.find(
     (j) => j.status === "collecting_bids" || j.status === "assigned" || j.status === "in_transit",
   );
-  const deals = PRODUCTS.filter((p) => p.tags?.includes("deal"));
-  const popular = PRODUCTS.filter((p) => p.tags?.includes("bestseller")).slice(0, 6);
+  const deals = products.filter((p) => p.tags?.includes("deal"));
+  const popular = products.filter((p) => p.tags?.includes("bestseller")).slice(0, 6);
 
   return (
     <div>
@@ -119,7 +119,7 @@ export default function Home() {
         <section>
           <SectionHead title="Shop by category" href="/groceries" />
           <div className="grid grid-cols-4 gap-3 mt-3">
-            {CATEGORIES.slice(0, 8).map((c) => (
+            {categories.slice(0, 8).map((c) => (
               <Link
                 key={c.slug}
                 href={`/groceries/${c.slug}`}

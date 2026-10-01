@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useStore } from "@/lib/store";
 import { TopBar, Card } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { ProductGrid } from "@/components/product";
-import { CATEGORIES, PRODUCTS } from "@/lib/mock/data";
 import { Emoji } from "@/components/Emoji";
 import { CartBar } from "@/components/CartBar";
 
 export default function Groceries() {
-  const featured = PRODUCTS.filter((p) => p.tags?.length).slice(0, 9);
+  const { products, categories, catalogueLoading } = useStore();
+  const featured = products.filter((p) => p.tags?.length).slice(0, 9);
 
   return (
     <div>
@@ -31,7 +32,7 @@ export default function Groceries() {
         <section>
           <h2 className="font-semibold mb-3">Categories</h2>
           <div className="grid grid-cols-2 gap-3">
-            {CATEGORIES.map((c) => (
+            {categories.map((c) => (
               <Link key={c.slug} href={`/groceries/${c.slug}`}>
                 <Card className="p-3 flex items-center gap-3">
                   <span
@@ -44,7 +45,7 @@ export default function Groceries() {
                       {c.name}
                     </p>
                     <p className="text-[10px] text-ink-400">
-                      {PRODUCTS.filter((p) => p.category === c.slug).length} items
+                      {products.filter((p) => p.category === c.slug).length} items
                     </p>
                   </div>
                 </Card>
@@ -55,7 +56,7 @@ export default function Groceries() {
 
         <section>
           <h2 className="font-semibold mb-3">Trending in your area</h2>
-          <ProductGrid products={featured} />
+          <ProductGrid products={featured} loading={catalogueLoading} />
         </section>
       </main>
 

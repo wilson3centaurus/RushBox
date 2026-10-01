@@ -7,7 +7,6 @@ import { Icon } from "@/components/icons";
 import { MapView, Timeline } from "@/components/MapView";
 import { useStore } from "@/lib/store";
 import { etaLabel, money, statusLabel } from "@/lib/format";
-import { productById } from "@/lib/mock/data";
 import { ProductImage } from "@/components/Emoji";
 
 const STEPS = [
@@ -40,7 +39,7 @@ export default function OrderTrackingPage({
 function OrderTracking({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const search = useSearchParams();
-  const { orders } = useStore();
+  const { orders, productById } = useStore();
   const order = orders.find((o) => o.id === id);
   const justPlaced = search.get("placed") === "1";
 

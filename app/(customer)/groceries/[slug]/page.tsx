@@ -1,10 +1,10 @@
 "use client";
 
 import { use, useState } from "react";
+import { useStore } from "@/lib/store";
 import { TopBar, EmptyState } from "@/components/ui";
 import { ProductGrid } from "@/components/product";
 import { CartBar } from "@/components/CartBar";
-import { categoryBySlug, productsByCategory } from "@/lib/mock/data";
 
 const SORTS = [
   { id: "popular", label: "Popular" },
@@ -18,6 +18,7 @@ export default function Category({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { categoryBySlug, productsByCategory, catalogueLoading } = useStore();
   const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("popular");
 
   const category = categoryBySlug(slug);
@@ -31,7 +32,9 @@ export default function Category({
     <div>
       <TopBar
         title={category?.name ?? "Category"}
-        subtitle={`${products.length} items available`}
+        subtitle={
+          catalogueLoading ? "Loading…" : `${products.length} items available`
+        }
         back
       />
 
@@ -52,8 +55,8 @@ export default function Category({
       </div>
 
       <main className="px-5 py-5">
-        {products.length ? (
-          <ProductGrid products={products} />
+        {catalogueLoading || products.length ? (
+          <ProductGrid products={products} loading={catalogueLoading} />
         ) : (
           <EmptyState
             icon="bag"

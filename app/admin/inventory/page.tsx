@@ -1,24 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import { Badge, Button, Card, Stat } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { PageHead, TableCard } from "@/components/DashShell";
 import { BarList } from "@/components/charts";
 import { money } from "@/lib/format";
-import { CATEGORIES, DARK_STORES, PRODUCTS } from "@/lib/mock/data";
 import { ProductImage } from "@/components/Emoji";
+import { DARK_STORES } from "@/lib/mock/data";
 
 export default function AdminInventory() {
+  const { products, categories } = useStore();
   const [store, setStore] = useState("all");
 
-  const rows = PRODUCTS.filter((p) => store === "all" || p.store === store);
+  const rows = products.filter((p) => store === "all" || p.store === store);
   const value = rows.reduce((s, p) => s + p.price * p.stock, 0);
   const low = rows.filter((p) => p.stock < 20);
 
-  const byCategory = CATEGORIES.map((c) => ({
+  const byCategory = categories.map((c) => ({
     label: c.name,
-    value: PRODUCTS.filter((p) => p.category === c.slug).reduce(
+    value: products.filter((p) => p.category === c.slug).reduce(
       (s, p) => s + p.stock,
       0,
     ),
@@ -60,7 +62,7 @@ export default function AdminInventory() {
               active={store === "all"}
               onClick={() => setStore("all")}
               label="All stores"
-              sub={`${PRODUCTS.length} SKUs`}
+              sub={`${products.length} SKUs`}
             />
             {DARK_STORES.map((s) => (
               <FilterRow
@@ -90,7 +92,7 @@ export default function AdminInventory() {
                 </div>
               </td>
               <td className="px-4 py-3 text-ink-500 whitespace-nowrap">
-                {CATEGORIES.find((c) => c.slug === p.category)?.name}
+                {categories.find((c) => c.slug === p.category)?.name}
               </td>
               <td className="px-4 py-3 text-ink-500 whitespace-nowrap">
                 {DARK_STORES.find((s) => s.id === p.store)?.area}

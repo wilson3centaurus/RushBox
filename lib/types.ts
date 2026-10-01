@@ -9,6 +9,14 @@ export type User = {
   initials: string;
 };
 
+export type Category = {
+  slug: string;
+  name: string;
+  emoji: string;
+  /** Tailwind gradient stops for the category tile, e.g. "from-green-50 to-green-100". */
+  tile: string;
+};
+
 export type Product = {
   id: string;
   name: string;

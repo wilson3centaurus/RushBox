@@ -6,7 +6,6 @@ import { Button, Card, EmptyState, TopBar } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
-import { productById } from "@/lib/mock/data";
 import { Emoji } from "@/components/Emoji";
 
 const PAYMENTS = [
@@ -21,7 +20,8 @@ const SLOTS = [
 ];
 
 export default function Checkout() {
-  const { cart, cartTotal, address, setAddress, placeOrder } = useStore();
+  const { cart, cartTotal, address, setAddress, placeOrder, productById } =
+    useStore();
   const [payment, setPayment] = useState("ecocash");
   const [slot, setSlot] = useState("now");
   const [editing, setEditing] = useState(false);

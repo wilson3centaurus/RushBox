@@ -5,14 +5,13 @@ import { Icon } from "@/components/icons";
 import { QtyStepper } from "@/components/product";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
-import { productById } from "@/lib/mock/data";
 import { ProductImage } from "@/components/Emoji";
 
 const DELIVERY_FEE = 1.5;
 const FREE_OVER = 20;
 
 export default function Cart() {
-  const { cart, cartTotal, setQty, clearCart } = useStore();
+  const { cart, cartTotal, setQty, clearCart, productById } = useStore();
 
   if (!cart.length) {
     return (

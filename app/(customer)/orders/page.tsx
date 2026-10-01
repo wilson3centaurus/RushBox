@@ -6,7 +6,6 @@ import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money, statusLabel } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
-import { productById } from "@/lib/mock/data";
 import { Emoji } from "@/components/Emoji";
 import type { GroceryStatus } from "@/lib/types";
 
@@ -19,7 +18,7 @@ const TONE: Record<GroceryStatus, "brand" | "green" | "grey" | "red" | "blue"> =
 };
 
 export default function Orders() {
-  const { orders, addToCart } = useStore();
+  const { orders, addToCart, productById } = useStore();
 
   return (
     <div>

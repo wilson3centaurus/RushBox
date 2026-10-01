@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import { Badge, Button, Card, Stat } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { PageHead } from "@/components/DashShell";
-import { productById } from "@/lib/mock/data";
 import { Emoji } from "@/components/Emoji";
 
 type Stage = "new" | "picking" | "packed" | "dispatched";
@@ -48,6 +48,7 @@ const ACTION: Record<Stage, string> = {
 };
 
 export default function OpsFulfilment() {
+  const { productById } = useStore();
   const [tickets, setTickets] = useState(INITIAL);
 
   function advance(id: string) {
