@@ -3,6 +3,12 @@
 
 create extension if not exists "pgcrypto";
 
+-- Helper functions live here rather than in `public`. PostgREST only exposes
+-- the schemas it is configured for, so anything in `private` cannot be reached
+-- at /rest/v1/rpc/* — see the note in 0002_policies.sql.
+create schema if not exists private;
+grant usage on schema private to anon, authenticated, service_role;
+
 -- ---------------------------------------------------------------- people
 
 create type user_role as enum ('customer', 'transporter', 'ops', 'admin');
@@ -19,7 +25,7 @@ create table profiles (
 );
 
 -- A profile row for every new auth user, so the app never sees a null profile.
-create function handle_new_user()
+create function private.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
   insert into public.profiles (id, phone, email, name)
@@ -35,7 +41,7 @@ $$;
 
 create trigger on_auth_user_created
   after insert on auth.users
-  for each row execute function handle_new_user();
+  for each row execute function private.handle_new_user();
 
 -- Role is assigned by an admin, never by the user. Without this, anyone could
 -- PATCH their own row to 'admin' and the rest of the policies would honour it.
@@ -45,10 +51,10 @@ create trigger on_auth_user_created
 -- how server-side code assigns staff. That path is unreachable from the
 -- browser: with no session, the profiles policies match no rows at all, so an
 -- anon request is stopped before the trigger ever runs.
-create function guard_role_change()
+create function private.guard_role_change()
 returns trigger language plpgsql security definer set search_path = public as $$
 declare
-  caller_may_set_role boolean := auth.uid() is null or is_admin();
+  caller_may_set_role boolean := auth.uid() is null or private.is_admin();
 begin
   if not caller_may_set_role then
     new.role := old.role;

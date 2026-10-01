@@ -25,9 +25,17 @@ actual protection.
 
 ---
 
-## 2. Apply the schema
+## 2. The schema — already applied
 
-**SQL Editor → New query**, then paste and run each in order:
+All three migrations are live on the project. Current state:
+
+- 14 tables, **row-level security enabled on all 14**, 31 policies
+- 3 dark stores, 10 categories, 43 products seeded
+- RLS helpers in a `private` schema, none reachable as RPC endpoints
+
+Supabase's own security advisors report no outstanding issues from our schema.
+
+If you ever rebuild from scratch, run them in order:
 
 | File | What it does |
 |---|---|
@@ -40,6 +48,23 @@ holding the anon key, which is everyone.
 
 The seed is an upsert — re-run it to update prices and stock rather than
 duplicating rows.
+
+### Why the helpers live in `private`
+
+PostgREST publishes every function in an exposed schema as an RPC endpoint. In
+`public`, the RLS helpers were callable at `/rest/v1/rpc/<name>` by anyone with
+the anon key — and because they are `SECURITY DEFINER`, they answered. The worst
+was `job_customer(uuid)`, which returned the owner of *any* job id, bypassing
+the policy that exists to prevent exactly that.
+
+Revoking `EXECUTE` looks like the fix and is not: RLS expressions are evaluated
+as the querying role, so removing it makes every policy that calls a helper fail
+and takes the whole app down. (Confirmed the hard way — the catalogue went to
+permission errors until the grants went back.) Moving them to a schema PostgREST
+does not expose closes the endpoints and leaves the grants, and therefore the
+policies, intact.
+
+**So: never add an RLS helper to `public`.** Put it in `private`.
 
 ### Make yourself an admin
 
@@ -61,10 +86,12 @@ bids or bid while unverified, that nobody can promote themselves to admin, and
 that an anonymous visitor can browse the catalogue but reach no customer data.
 
 It writes fixture rows, so **never run it against production**. Use a branch
-database (Supabase → Branches) or a local Postgres:
+database (Supabase → Branches) or a local Postgres — `00_local_stub.sql`
+supplies the `auth` schema and the three Supabase roles:
 
 ```bash
 createdb rbx_test
+psql -d rbx_test -f supabase/tests/00_local_stub.sql
 psql -d rbx_test -f supabase/migrations/0001_schema.sql
 psql -d rbx_test -f supabase/migrations/0002_policies.sql
 psql -d rbx_test -f supabase/tests/rls_test.sql
