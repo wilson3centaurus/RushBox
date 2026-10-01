@@ -1,0 +1,412 @@
+[
+ {
+  "out": "categories/fruit-veg.webp",
+  "size": 320,
+  "image_id": "0b312a9e9c21c247",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Peppers!",
+  "author": "Ian Ransley",
+  "source": "https://www.flickr.com/photos/design-dog/1105387190"
+ },
+ {
+  "out": "categories/dairy-eggs.webp",
+  "size": 320,
+  "image_id": "2a9caba20f7b7dfd",
+  "subset": "test",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Fresh Eggs",
+  "author": "J P Davidson",
+  "source": "https://www.flickr.com/photos/jpdavidsonimages/4752438108"
+ },
+ {
+  "out": "categories/bakery.webp",
+  "size": 320,
+  "image_id": "34acf49f8fef0d78",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Bread and buns",
+  "author": "TNS Sofres",
+  "source": "https://www.flickr.com/photos/124561666@N02/14396922334"
+ },
+ {
+  "out": "categories/meat-fish.webp",
+  "size": 320,
+  "image_id": "caa0b87ff80e7fca",
+  "subset": "validation",
+  "box": null,
+  "rotation": "0.0",
+  "title": "100グラム2100円のサーロインでございます",
+  "author": "Ryosuke Hosoi",
+  "source": "https://www.flickr.com/photos/rhosoi/303340771"
+ },
+ {
+  "out": "categories/drinks.webp",
+  "size": 320,
+  "image_id": "11cae5bd17e64c80",
+  "subset": "test",
+  "box": [
+   0.420312,
+   0.345833,
+   0.948438,
+   1.0
+  ],
+  "rotation": null,
+  "title": "Crystal and I *really* like orange juice in New Orleans,  Louisiana",
+  "author": "Shane Becker",
+  "source": "https://www.flickr.com/photos/veganstraightedge/3835097172/"
+ },
+ {
+  "out": "categories/snacks.webp",
+  "size": 320,
+  "image_id": "6501ecf665518c6f",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": null,
+  "title": "homemade cookies",
+  "author": "Think Draw",
+  "source": "https://www.flickr.com/photos/thinkdraw/6182804"
+ },
+ {
+  "out": "categories/pantry.webp",
+  "size": 320,
+  "image_id": "ae81ab9752fe221e",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Make your own deodorant",
+  "author": "thedabblist",
+  "source": "https://www.flickr.com/photos/64636759@N07/9669540222"
+ },
+ {
+  "out": "categories/household.webp",
+  "size": 320,
+  "image_id": "58b50dce36e63205",
+  "subset": "validation",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Organic hippie crap",
+  "author": "Joshua Blount",
+  "source": "https://www.flickr.com/photos/stickwithjosh/5177208422"
+ },
+ {
+  "out": "categories/baby.webp",
+  "size": 320,
+  "image_id": "dea86ba2060f08c2",
+  "subset": "validation",
+  "box": null,
+  "rotation": "0.0",
+  "title": "bumGenius",
+  "author": "trenttsd",
+  "source": "https://www.flickr.com/photos/84335369@N00/2887774785"
+ },
+ {
+  "out": "categories/pharmacy.webp",
+  "size": 320,
+  "image_id": "4bd3837a5811c377",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Pills",
+  "author": "Jamie",
+  "source": "https://www.flickr.com/photos/jamiesrabbits/5747870989"
+ },
+ {
+  "out": "products/tomatoes.webp",
+  "size": 480,
+  "image_id": "421ce9fde8fd6ca9",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": null,
+  "title": "Jersey Tomatoes",
+  "author": "Eden, Janine and Jim",
+  "source": "https://www.flickr.com/photos/edenpictures/11279110123"
+ },
+ {
+  "out": "products/bananas.webp",
+  "size": 480,
+  "image_id": "5451e8d4f723941f",
+  "subset": "test",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": null,
+  "title": "everyone misses you, lou reed :  bananas, ferry building, san francisco (2012)",
+  "author": "torbakhopper",
+  "source": "https://www.flickr.com/photos/gazeronly/7849659582"
+ },
+ {
+  "out": "products/onions.webp",
+  "size": 480,
+  "image_id": "89b928a5bb903756",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Onions and green chili",
+  "author": "Johan Bichel Lindegaard",
+  "source": "https://www.flickr.com/photos/accidentdesigns/5560910594"
+ },
+ {
+  "out": "products/covo.webp",
+  "size": 480,
+  "image_id": "377cd15004fa3206",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": null,
+  "title": "cabbage like plant",
+  "author": "Iqbal Osman",
+  "source": "https://www.flickr.com/photos/82066314@N06/10345826983"
+ },
+ {
+  "out": "products/potatoes.webp",
+  "size": 480,
+  "image_id": "4951907d9674ff71",
+  "subset": "test",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Potatoes",
+  "author": "Bart Everson",
+  "source": "https://www.flickr.com/photos/editor/3549887095"
+ },
+ {
+  "out": "products/apples.webp",
+  "size": 480,
+  "image_id": "1dcf7908c7b0db7c",
+  "subset": "test",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": null,
+  "title": "Apples, apples, apples",
+  "author": "James Cridland",
+  "source": "https://www.flickr.com/photos/jamescridland/1305153543"
+ },
+ {
+  "out": "products/eggs.webp",
+  "size": 480,
+  "image_id": "8ced635e3b0c3093",
+  "subset": "test",
+  "box": [
+   0.0,
+   0.0,
+   0.998437,
+   1.0
+  ],
+  "rotation": null,
+  "title": "Ovos, Huevos, Eggs",
+  "author": "Victoria Rachitzky Hoch",
+  "source": "https://www.flickr.com/photos/viclic/272759452"
+ },
+ {
+  "out": "products/cheese.webp",
+  "size": 480,
+  "image_id": "2b8f5adbf64c1d1f",
+  "subset": "test",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "cheese 2 - Cabot Creamery - Baconfest 2013.jpg",
+  "author": "opacity",
+  "source": "https://www.flickr.com/photos/opacity/8669831713"
+ },
+ {
+  "out": "products/white-bread.webp",
+  "size": 480,
+  "image_id": "f62bfa78385638f4",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Michael's Homemade Bread",
+  "author": "Katie Kuksenok",
+  "source": "https://www.flickr.com/photos/kt_kuksenok/5402793405"
+ },
+ {
+  "out": "products/brown-bread.webp",
+  "size": 480,
+  "image_id": "4c67d72a6508d64c",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Maize",
+  "author": "Janels Katlaps",
+  "source": "https://www.flickr.com/photos/smoking2much/7248252860"
+ },
+ {
+  "out": "products/buns.webp",
+  "size": 480,
+  "image_id": "f78a660a0d76b681",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "P1080130",
+  "author": "Aaron \"tango\" Tang",
+  "source": "https://www.flickr.com/photos/hahatango/5113102785"
+ },
+ {
+  "out": "products/kapenta.webp",
+  "size": 480,
+  "image_id": "692bf19dff5271df",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Sardines at Loule Market - Portugal (Loule)",
+  "author": "Romain MOREL",
+  "source": "https://www.flickr.com/photos/romainmo/2884507685"
+ },
+ {
+  "out": "products/boerewors.webp",
+  "size": 480,
+  "image_id": "175cf5b1897589dc",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "nineteen/three-sixty-five",
+  "author": "Laura Bittner",
+  "source": "https://www.flickr.com/photos/wolfsavard/4766578900"
+ },
+ {
+  "out": "products/water.webp",
+  "size": 480,
+  "image_id": "ee322603860d9c7a",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Water",
+  "author": "Brian Smithson",
+  "source": "https://www.flickr.com/photos/smithser/7239957418"
+ },
+ {
+  "out": "products/mealie-meal.webp",
+  "size": 480,
+  "image_id": "0f2b2cf703a11a6f",
+  "subset": "validation",
+  "box": [
+   0.0,
+   0.0,
+   1.0,
+   1.0
+  ],
+  "rotation": "0.0",
+  "title": "Corn. Sweet!",
+  "author": "RichardBH",
+  "source": "https://www.flickr.com/photos/rbh/14880510979"
+ },
+ {
+  "out": "products/rice.webp",
+  "size": 480,
+  "image_id": "bf25c5eeb590c258",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "rice bowl",
+  "author": "georgereyes",
+  "source": "https://www.flickr.com/photos/george_reyes/391843903"
+ },
+ {
+  "out": "products/sugar.webp",
+  "size": 480,
+  "image_id": "c016241a4985047c",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Sugar",
+  "author": "Melissa Wiese",
+  "source": "https://www.flickr.com/photos/42dreams/2452033439"
+ },
+ {
+  "out": "products/salt.webp",
+  "size": 480,
+  "image_id": "4c2b73e8691b3dfa",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "sea salt",
+  "author": "mriggen",
+  "source": "https://www.flickr.com/photos/riggenransom/9290433208"
+ },
+ {
+  "out": "products/toilet-paper.webp",
+  "size": 480,
+  "image_id": "e2e9be5f8dbd9dad",
+  "subset": "test",
+  "box": null,
+  "rotation": null,
+  "title": "Wipe out",
+  "author": "Kyknoord",
+  "source": "https://www.flickr.com/photos/kyknoord/390035987"
+ },
+ {
+  "out": "products/plasters.webp",
+  "size": 480,
+  "image_id": "3fba6495dc4f6bfe",
+  "subset": "test",
+  "box": null,
+  "rotation": "0.0",
+  "title": "Plasters",
+  "author": "Medisave UK",
+  "source": "https://www.flickr.com/photos/107621760@N03/10668646004"
+ }
+]

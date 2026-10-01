@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import { Emoji } from "@/components/Emoji";
+import { DeliveryBill, DeliveryBlocker } from "@/components/DeliveryBill";
 
 const PAYMENTS = [
   { id: "ecocash", label: "EcoCash", sub: "+263 77 123 4567", emoji: "📱" },
@@ -20,7 +21,7 @@ const SLOTS = [
 ];
 
 export default function Checkout() {
-  const { cart, cartTotal, address, setAddress, placeOrder, productById } =
+  const { cart, cartTotal, address, setAddress, placeOrder, productById, deliveryQuote } =
     useStore();
   const [payment, setPayment] = useState("ecocash");
   const [slot, setSlot] = useState("now");
@@ -42,10 +43,11 @@ export default function Checkout() {
     );
   }
 
-  const fee = cartTotal >= 20 ? 0 : 1.5;
-  const total = cartTotal + fee;
+  const total = cartTotal + deliveryQuote.fee;
+  const blocked = deliveryQuote.belowMinimum !== null || deliveryQuote.outOfRange;
 
   function confirm() {
+    if (blocked) return;
     setBusy(true);
     const order = placeOrder();
     setTimeout(() => router.replace(`/orders/${order.id}?placed=1`), 900);
@@ -162,25 +164,18 @@ export default function Checkout() {
               );
             })}
           </div>
-          <div className="border-t border-ink-100 mt-3 pt-3 space-y-1">
-            <div className="flex justify-between text-sm text-ink-500">
-              <span>Delivery fee</span>
-              <span className={fee === 0 ? "text-emerald-600 font-semibold" : ""}>
-                {fee === 0 ? "FREE" : money(fee)}
-              </span>
-            </div>
-            <div className="flex justify-between font-bold">
-              <span>To pay</span>
-              <span>{money(total)}</span>
-            </div>
+          <div className="border-t border-ink-100 mt-3 pt-2">
+            <DeliveryBill subtotal={cartTotal} quote={deliveryQuote} />
           </div>
         </Card>
+
+        <DeliveryBlocker quote={deliveryQuote} />
       </main>
 
       <div className="fixed bottom-[68px] inset-x-0 z-40 mx-auto max-w-[520px] px-4">
         <Button
           onClick={confirm}
-          disabled={busy}
+          disabled={busy || blocked}
           variant="primary"
           size="lg"
           full

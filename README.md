@@ -7,7 +7,10 @@ Two products, one app:
 - **RushBox Groceries** — Blinkit-style dark store model. We own the inventory and the warehouses; groceries and medicine in ~30 minutes.
 - **RushBox Move** — inDrive-style marketplace. Post a job, nearby transporters bid, you pick the price. Three job types: **Cargo**, **Parcel**, and **Buy-For-Me** (a runner buys from a shop you name and delivers it).
 
-See [`docs/PROJECT_OVERVIEW.md`](docs/PROJECT_OVERVIEW.md) for the full feature list.
+See [`docs/PROJECT_OVERVIEW.md`](docs/PROJECT_OVERVIEW.md) for the full feature list, and
+[`docs/OPERATING_MODEL.md`](docs/OPERATING_MODEL.md) for how the business runs — who
+delivers, how Move is priced, cash on delivery, and how everyone gets paid. The
+same thing is an interactive 3D map in the admin dashboard.
 
 ## Stack
 
@@ -31,10 +34,11 @@ mock data with no backend. Set it to `false` once Supabase is reachable.
 | `/` `/login` `/verify` | Welcome and phone + OTP sign-in |
 | `/home` `/groceries` `/product/[id]` `/cart` `/checkout` `/orders` | Customer — groceries |
 | `/move` `/move/new/[type]` `/move/[id]` | Customer — cargo, parcels, Buy-For-Me |
-| `/profile` `/wallet` `/addresses` `/support` | Customer — account |
-| `/driver` | Transporter — job feed, bidding, active job, earnings, verification |
+| `/profile` `/profile/edit` `/profile/phone` `/profile/verify` | Customer — name, photo, number, optional ID check |
+| `/wallet` `/addresses` `/support` `/credits` | Customer — account and photo credits |
+| `/driver` | Transporter — job feed, bidding, active job, earnings, required ID/licence/vehicle checks |
 | `/ops` | Dark store — fulfilment queue, inventory, riders |
-| `/admin` | HQ — analytics, orders, transporters, customers, inventory, pricing, disputes |
+| `/admin` | HQ — 3D system map, analytics, orders, transporters, ID verifications, customers, inventory, pricing & delivery rules, disputes |
 
 The login screen has demo shortcuts into the transporter, ops and admin surfaces.
 In production these are gated by role and never shown to a customer.
@@ -57,8 +61,10 @@ legacy/       the original vanilla HTML/Firebase scaffold, kept for reference
 Front end is complete across all five surfaces. Backend is deliberately light:
 
 - **Auth is mocked.** Any 6-digit code signs you in. Real phone OTP is not wired up.
-- **Data is mocked.** Everything reads from `lib/mock/` and persists to
-  `localStorage`. No Supabase calls are made.
+- **The catalogue and pricing come from Supabase** when
+  `NEXT_PUBLIC_USE_MOCK_DATA=false`. Everything else — orders, jobs, profile
+  edits, ID photos, and pricing changes made without an admin session — lives
+  in `localStorage` on the device until auth is wired.
 - **Bids are simulated.** Posting a Move job schedules fake offers a few seconds
   later so the bidding screen behaves realistically. Replace with a Supabase
   realtime subscription.

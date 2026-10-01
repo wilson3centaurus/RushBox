@@ -77,12 +77,14 @@ function Verify() {
           <Icon name="back" />
         </button>
 
-        <div className="mt-8 animate-fade-up">
-          <Logo />
-          <h1 className="text-2xl font-bold mt-6">Enter the code</h1>
-          <p className="text-ink-500 mt-1.5 text-sm">
-            Sent to <span className="font-semibold text-ink-800">{phone}</span>
-          </p>
+        <div className="mt-6 animate-fade-up">
+          <div className="flex flex-col items-center text-center">
+            <Logo size="lg" />
+            <h1 className="text-2xl font-bold mt-6">Enter the code</h1>
+            <p className="text-ink-500 mt-1.5 text-sm">
+              Sent to <span className="font-semibold text-ink-800">{phone}</span>
+            </p>
+          </div>
 
           <div className="flex gap-2 mt-7" onPaste={onPaste}>
             {code.map((digit, i) => (

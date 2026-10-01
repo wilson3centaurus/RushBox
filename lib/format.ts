@@ -29,3 +29,8 @@ export function statusLabel(status: string) {
     .map((w) => w[0].toUpperCase() + w.slice(1))
     .join(" ");
 }
+
+/** "$20" for whole amounts, "$1.50" otherwise. For sentences, not price columns. */
+export function moneyShort(amount: number) {
+  return Number.isInteger(amount) ? `$${amount.toLocaleString("en-US")}` : money(amount);
+}

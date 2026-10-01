@@ -44,12 +44,14 @@ export default function Login() {
           <Icon name="back" />
         </button>
 
-        <div className="mt-8 animate-fade-up">
-          <Logo />
-          <h1 className="text-2xl font-bold mt-6">Enter your number</h1>
-          <p className="text-ink-500 mt-1.5 text-sm">
-            We&apos;ll text you a code to sign in. No password needed.
-          </p>
+        <div className="mt-6 animate-fade-up">
+          <div className="flex flex-col items-center text-center">
+            <Logo size="lg" />
+            <h1 className="text-2xl font-bold mt-6">Enter your number</h1>
+            <p className="text-ink-500 mt-1.5 text-sm">
+              We&apos;ll text you a code to sign in. No password needed.
+            </p>
+          </div>
 
           <div className="mt-7 flex items-stretch rounded-2xl border border-ink-200 focus-within:ring-2 focus-within:ring-brand-400 focus-within:border-transparent overflow-hidden">
             <span className="flex items-center gap-1.5 px-4 bg-ink-50 border-r border-ink-200 font-semibold text-ink-700">

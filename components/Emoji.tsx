@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { emojiSrc } from "@/lib/emoji";
-import type { Product } from "@/lib/types";
+import type { Category, Product } from "@/lib/types";
 
 /**
  * Bundled vector art rather than the system emoji font, so a tomato looks the
@@ -82,5 +82,42 @@ export function ProductImage({
     >
       <Emoji char={product.emoji} className={art} label={product.name} />
     </div>
+  );
+}
+
+/** The category's photo, or its illustration on the category tint. */
+export function CategoryImage({
+  category,
+  className = "w-11 h-11 rounded-xl",
+  art = "w-6 h-6",
+}: {
+  category: Category;
+  className?: string;
+  art?: string;
+}) {
+  const [broken, setBroken] = useState(false);
+
+  if (category.image && !broken) {
+    return (
+      <span className={`relative block overflow-hidden bg-ink-100 ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- small static file, already sized */}
+        <img
+          src={category.image}
+          alt=""
+          loading="lazy"
+          draggable={false}
+          onError={() => setBroken(true)}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`bg-gradient-to-br ${category.tile} flex items-center justify-center ${className}`}
+    >
+      <Emoji char={category.emoji} className={art} />
+    </span>
   );
 }

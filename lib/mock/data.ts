@@ -39,43 +39,43 @@ export const SHOPS = [
 ];
 
 export const CATEGORIES = [
-  { slug: "fruit-veg", name: "Fruit & Veg", emoji: "🥬", color: "bg-green-100", tile: "from-green-50 to-green-100" },
-  { slug: "dairy-eggs", name: "Dairy & Eggs", emoji: "🥚", color: "bg-yellow-100", tile: "from-amber-50 to-yellow-100" },
-  { slug: "bakery", name: "Bakery", emoji: "🍞", color: "bg-amber-100", tile: "from-orange-50 to-amber-100" },
-  { slug: "meat-fish", name: "Meat & Fish", emoji: "🍗", color: "bg-red-100", tile: "from-rose-50 to-red-100" },
-  { slug: "drinks", name: "Drinks", emoji: "🥤", color: "bg-sky-100", tile: "from-sky-50 to-blue-100" },
-  { slug: "snacks", name: "Snacks", emoji: "🍪", color: "bg-orange-100", tile: "from-orange-50 to-orange-100" },
-  { slug: "pantry", name: "Pantry", emoji: "🍚", color: "bg-stone-100", tile: "from-stone-50 to-stone-100" },
-  { slug: "household", name: "Household", emoji: "🧼", color: "bg-indigo-100", tile: "from-indigo-50 to-indigo-100" },
-  { slug: "baby", name: "Baby", emoji: "🍼", color: "bg-pink-100", tile: "from-pink-50 to-pink-100" },
-  { slug: "pharmacy", name: "Pharmacy", emoji: "💊", color: "bg-emerald-100", tile: "from-emerald-50 to-emerald-100" },
+  { slug: "fruit-veg", name: "Fruit & Veg", emoji: "🥬", color: "bg-green-100", tile: "from-green-50 to-green-100", image: "/photos/categories/fruit-veg.webp" },
+  { slug: "dairy-eggs", name: "Dairy & Eggs", emoji: "🥚", color: "bg-yellow-100", tile: "from-amber-50 to-yellow-100", image: "/photos/categories/dairy-eggs.webp" },
+  { slug: "bakery", name: "Bakery", emoji: "🍞", color: "bg-amber-100", tile: "from-orange-50 to-amber-100", image: "/photos/categories/bakery.webp" },
+  { slug: "meat-fish", name: "Meat & Fish", emoji: "🍗", color: "bg-red-100", tile: "from-rose-50 to-red-100", image: "/photos/categories/meat-fish.webp" },
+  { slug: "drinks", name: "Drinks", emoji: "🥤", color: "bg-sky-100", tile: "from-sky-50 to-blue-100", image: "/photos/categories/drinks.webp" },
+  { slug: "snacks", name: "Snacks", emoji: "🍪", color: "bg-orange-100", tile: "from-orange-50 to-orange-100", image: "/photos/categories/snacks.webp" },
+  { slug: "pantry", name: "Pantry", emoji: "🍚", color: "bg-stone-100", tile: "from-stone-50 to-stone-100", image: "/photos/categories/pantry.webp" },
+  { slug: "household", name: "Household", emoji: "🧼", color: "bg-indigo-100", tile: "from-indigo-50 to-indigo-100", image: "/photos/categories/household.webp" },
+  { slug: "baby", name: "Baby", emoji: "🍼", color: "bg-pink-100", tile: "from-pink-50 to-pink-100", image: "/photos/categories/baby.webp" },
+  { slug: "pharmacy", name: "Pharmacy", emoji: "💊", color: "bg-emerald-100", tile: "from-emerald-50 to-emerald-100", image: "/photos/categories/pharmacy.webp" },
 ];
 
 export const PRODUCTS: Product[] = [
-  { id: "p1", name: "Tomatoes", category: "fruit-veg", price: 1.2, unit: "per kg", emoji: "🍅", stock: 48, store: "ds-msasa", tags: ["bestseller"] },
-  { id: "p2", name: "Bananas", category: "fruit-veg", price: 1.5, unit: "per kg", emoji: "🍌", stock: 32, store: "ds-msasa" },
-  { id: "p3", name: "Onions", category: "fruit-veg", price: 0.9, unit: "per kg", emoji: "🧅", stock: 60, store: "ds-msasa" },
-  { id: "p4", name: "Rape / Covo Bundle", category: "fruit-veg", price: 0.5, unit: "bundle", emoji: "🥬", stock: 25, store: "ds-msasa", tags: ["deal"], wasPrice: 0.8 },
-  { id: "p5", name: "Potatoes", category: "fruit-veg", price: 2.4, unit: "2kg bag", emoji: "🥔", stock: 40, store: "ds-avondale" },
-  { id: "p6", name: "Apples", category: "fruit-veg", price: 2.8, unit: "per kg", emoji: "🍎", stock: 18, store: "ds-avondale" },
+  { id: "p1", name: "Tomatoes", category: "fruit-veg", price: 1.2, unit: "per kg", emoji: "🍅", stock: 48, store: "ds-msasa", tags: ["bestseller"], image: "/photos/products/tomatoes.webp" },
+  { id: "p2", name: "Bananas", category: "fruit-veg", price: 1.5, unit: "per kg", emoji: "🍌", stock: 32, store: "ds-msasa", image: "/photos/products/bananas.webp" },
+  { id: "p3", name: "Onions", category: "fruit-veg", price: 0.9, unit: "per kg", emoji: "🧅", stock: 60, store: "ds-msasa", image: "/photos/products/onions.webp" },
+  { id: "p4", name: "Rape / Covo Bundle", category: "fruit-veg", price: 0.5, unit: "bundle", emoji: "🥬", stock: 25, store: "ds-msasa", tags: ["deal"], wasPrice: 0.8, image: "/photos/products/covo.webp" },
+  { id: "p5", name: "Potatoes", category: "fruit-veg", price: 2.4, unit: "2kg bag", emoji: "🥔", stock: 40, store: "ds-avondale", image: "/photos/products/potatoes.webp" },
+  { id: "p6", name: "Apples", category: "fruit-veg", price: 2.8, unit: "per kg", emoji: "🍎", stock: 18, store: "ds-avondale", image: "/photos/products/apples.webp" },
 
   { id: "p7", name: "Dairibord Fresh Milk", category: "dairy-eggs", price: 1.4, unit: "500ml", emoji: "🥛", stock: 55, store: "ds-msasa", tags: ["bestseller"] },
-  { id: "p8", name: "Eggs", category: "dairy-eggs", price: 3.2, unit: "tray of 30", emoji: "🥚", stock: 22, store: "ds-msasa" },
-  { id: "p9", name: "Cheddar Cheese", category: "dairy-eggs", price: 4.5, unit: "250g", emoji: "🧀", stock: 12, store: "ds-avondale" },
+  { id: "p8", name: "Eggs", category: "dairy-eggs", price: 3.2, unit: "tray of 30", emoji: "🥚", stock: 22, store: "ds-msasa", image: "/photos/products/eggs.webp" },
+  { id: "p9", name: "Cheddar Cheese", category: "dairy-eggs", price: 4.5, unit: "250g", emoji: "🧀", stock: 12, store: "ds-avondale", image: "/photos/products/cheese.webp" },
   { id: "p10", name: "Lacto Sour Milk", category: "dairy-eggs", price: 1.1, unit: "500ml", emoji: "🥛", stock: 38, store: "ds-msasa" },
 
-  { id: "p11", name: "White Bread", category: "bakery", price: 1.0, unit: "loaf", emoji: "🍞", stock: 44, store: "ds-msasa", tags: ["bestseller"] },
-  { id: "p12", name: "Brown Bread", category: "bakery", price: 1.1, unit: "loaf", emoji: "🥖", stock: 30, store: "ds-msasa" },
-  { id: "p13", name: "Buns", category: "bakery", price: 1.8, unit: "pack of 6", emoji: "🥐", stock: 16, store: "ds-avondale" },
+  { id: "p11", name: "White Bread", category: "bakery", price: 1.0, unit: "loaf", emoji: "🍞", stock: 44, store: "ds-msasa", tags: ["bestseller"], image: "/photos/products/white-bread.webp" },
+  { id: "p12", name: "Brown Bread", category: "bakery", price: 1.1, unit: "loaf", emoji: "🥖", stock: 30, store: "ds-msasa", image: "/photos/products/brown-bread.webp" },
+  { id: "p13", name: "Buns", category: "bakery", price: 1.8, unit: "pack of 6", emoji: "🥐", stock: 16, store: "ds-avondale", image: "/photos/products/buns.webp" },
 
   { id: "p14", name: "Chicken Pieces", category: "meat-fish", price: 4.2, unit: "1kg", emoji: "🍗", stock: 20, store: "ds-msasa", tags: ["bestseller"] },
   { id: "p15", name: "Beef Mince", category: "meat-fish", price: 5.5, unit: "1kg", emoji: "🥩", stock: 14, store: "ds-msasa" },
-  { id: "p16", name: "Kapenta", category: "meat-fish", price: 3.0, unit: "500g", emoji: "🐟", stock: 26, store: "ds-mbare" },
-  { id: "p17", name: "Boerewors", category: "meat-fish", price: 6.0, unit: "1kg", emoji: "🌭", stock: 9, store: "ds-avondale" },
+  { id: "p16", name: "Kapenta", category: "meat-fish", price: 3.0, unit: "500g", emoji: "🐟", stock: 26, store: "ds-mbare", image: "/photos/products/kapenta.webp" },
+  { id: "p17", name: "Boerewors", category: "meat-fish", price: 6.0, unit: "1kg", emoji: "🌭", stock: 9, store: "ds-avondale", image: "/photos/products/boerewors.webp" },
 
   { id: "p18", name: "Mazoe Orange Crush", category: "drinks", price: 3.5, unit: "2L", emoji: "🧃", stock: 50, store: "ds-msasa", tags: ["bestseller"] },
   { id: "p19", name: "Coca-Cola", category: "drinks", price: 1.2, unit: "500ml", emoji: "🥤", stock: 72, store: "ds-msasa" },
-  { id: "p20", name: "Still Water", category: "drinks", price: 0.7, unit: "1.5L", emoji: "💧", stock: 90, store: "ds-msasa" },
+  { id: "p20", name: "Still Water", category: "drinks", price: 0.7, unit: "1.5L", emoji: "💧", stock: 90, store: "ds-msasa", image: "/photos/products/water.webp" },
   { id: "p21", name: "Cascade Juice", category: "drinks", price: 2.2, unit: "1L", emoji: "🧃", stock: 28, store: "ds-avondale", tags: ["deal"], wasPrice: 2.8 },
 
   { id: "p22", name: "Lobels Biscuits", category: "snacks", price: 1.6, unit: "200g", emoji: "🍪", stock: 34, store: "ds-msasa" },
@@ -83,16 +83,16 @@ export const PRODUCTS: Product[] = [
   { id: "p24", name: "Peanut Butter", category: "snacks", price: 2.5, unit: "375g", emoji: "🥜", stock: 21, store: "ds-avondale" },
   { id: "p25", name: "Charhons Sweets", category: "snacks", price: 0.8, unit: "pack", emoji: "🍬", stock: 60, store: "ds-mbare" },
 
-  { id: "p26", name: "Mealie Meal (Roller)", category: "pantry", price: 6.5, unit: "10kg", emoji: "🌽", stock: 35, store: "ds-msasa", tags: ["bestseller"] },
-  { id: "p27", name: "White Rice", category: "pantry", price: 3.8, unit: "2kg", emoji: "🍚", stock: 29, store: "ds-msasa" },
+  { id: "p26", name: "Mealie Meal (Roller)", category: "pantry", price: 6.5, unit: "10kg", emoji: "🌽", stock: 35, store: "ds-msasa", tags: ["bestseller"], image: "/photos/products/mealie-meal.webp" },
+  { id: "p27", name: "White Rice", category: "pantry", price: 3.8, unit: "2kg", emoji: "🍚", stock: 29, store: "ds-msasa", image: "/photos/products/rice.webp" },
   { id: "p28", name: "Cooking Oil", category: "pantry", price: 4.0, unit: "2L", emoji: "🛢️", stock: 24, store: "ds-msasa" },
-  { id: "p29", name: "Sugar", category: "pantry", price: 1.9, unit: "2kg", emoji: "🍬", stock: 41, store: "ds-avondale" },
-  { id: "p30", name: "Salt", category: "pantry", price: 0.6, unit: "1kg", emoji: "🧂", stock: 55, store: "ds-msasa" },
+  { id: "p29", name: "Sugar", category: "pantry", price: 1.9, unit: "2kg", emoji: "🍬", stock: 41, store: "ds-avondale", image: "/photos/products/sugar.webp" },
+  { id: "p30", name: "Salt", category: "pantry", price: 0.6, unit: "1kg", emoji: "🧂", stock: 55, store: "ds-msasa", image: "/photos/products/salt.webp" },
   { id: "p31", name: "Tanganda Tea", category: "pantry", price: 2.1, unit: "100 bags", emoji: "🍵", stock: 33, store: "ds-msasa" },
 
   { id: "p32", name: "Sunlight Washing Powder", category: "household", price: 3.4, unit: "1kg", emoji: "🧺", stock: 27, store: "ds-msasa" },
   { id: "p33", name: "Geisha Soap", category: "household", price: 0.9, unit: "bar", emoji: "🧼", stock: 64, store: "ds-msasa" },
-  { id: "p34", name: "Toilet Paper", category: "household", price: 3.2, unit: "9 rolls", emoji: "🧻", stock: 31, store: "ds-avondale" },
+  { id: "p34", name: "Toilet Paper", category: "household", price: 3.2, unit: "9 rolls", emoji: "🧻", stock: 31, store: "ds-avondale", image: "/photos/products/toilet-paper.webp" },
   { id: "p35", name: "Dishwashing Liquid", category: "household", price: 1.8, unit: "750ml", emoji: "🧴", stock: 19, store: "ds-msasa" },
 
   { id: "p36", name: "Nappies (Size 3)", category: "baby", price: 8.5, unit: "pack of 40", emoji: "🧷", stock: 11, store: "ds-avondale" },
@@ -102,7 +102,7 @@ export const PRODUCTS: Product[] = [
   { id: "p39", name: "Paracetamol", category: "pharmacy", price: 1.5, unit: "20 tablets", emoji: "💊", stock: 48, store: "ds-msasa", tags: ["bestseller"] },
   { id: "p40", name: "Ibuprofen", category: "pharmacy", price: 2.2, unit: "24 tablets", emoji: "💊", stock: 30, store: "ds-msasa" },
   { id: "p41", name: "Cough Syrup", category: "pharmacy", price: 4.0, unit: "100ml", emoji: "🧪", stock: 15, store: "ds-avondale" },
-  { id: "p42", name: "Plasters", category: "pharmacy", price: 1.2, unit: "pack of 20", emoji: "🩹", stock: 40, store: "ds-msasa" },
+  { id: "p42", name: "Plasters", category: "pharmacy", price: 1.2, unit: "pack of 20", emoji: "🩹", stock: 40, store: "ds-msasa", image: "/photos/products/plasters.webp" },
   { id: "p43", name: "Antiseptic Liquid", category: "pharmacy", price: 3.6, unit: "250ml", emoji: "🧴", stock: 8, store: "ds-msasa" },
 ];
 

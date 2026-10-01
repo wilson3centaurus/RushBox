@@ -32,7 +32,11 @@ type IconName =
   | "flag"
   | "tag"
   | "menu"
-  | "zap";
+  | "zap"
+  | "layers"
+  | "edit"
+  | "trash"
+  | "id";
 
 const PATHS: Record<IconName, string> = {
   home: "M3 10.5 12 3l9 7.5M5.5 9.5V20a1 1 0 0 0 1 1H9.5v-5.5h5V21h3a1 1 0 0 0 1-1V9.5",
@@ -69,6 +73,10 @@ const PATHS: Record<IconName, string> = {
   tag: "M4 12.5V4.5h8l8 8-8 8-8-8ZM8.5 9h.01",
   menu: "M4 7h16M4 12h16M4 17h16",
   zap: "M13.5 3 5.5 13.5h5L10 21l8-10.5h-5L13.5 3Z",
+  layers: "M12 3.5 21 8.5l-9 5-9-5 9-5ZM3 12.5l9 5 9-5M3 16.5l9 5 9-5",
+  edit: "M4 20h4L19 9l-4-4L4 16v4ZM13.5 6.5l4 4",
+  trash: "M4.5 7h15M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3",
+  id: "M3.5 5.5h17v13h-17v-13ZM8.5 12.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM5.5 16c.6-1.7 1.6-2.5 3-2.5s2.4.8 3 2.5M14 10h4M14 13.5h3",
 };
 
 const FILLED: Partial<Record<IconName, boolean>> = { star: true, zap: true };

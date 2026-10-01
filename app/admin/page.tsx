@@ -7,6 +7,8 @@ import { PageHead } from "@/components/DashShell";
 import { BarList, TrendChart } from "@/components/charts";
 import { money } from "@/lib/format";
 import { DARK_STORES } from "@/lib/mock/data";
+import { useStore } from "@/lib/store";
+import { SystemMap } from "@/components/system-map";
 
 const TREND = [
   { label: "Mon", groceries: 842, move: 310 },
@@ -26,14 +28,21 @@ const AREAS = [
   { label: "Chitungwiza", value: 97 },
 ];
 
-const ATTENTION = [
-  { icon: "shield", label: "2 transporters awaiting verification", href: "/admin/transporters", tone: "amber" },
-  { icon: "flag", label: "1 open Buy-for-me dispute", href: "/admin/disputes", tone: "red" },
-  { icon: "store", label: "29 SKUs below reorder level", href: "/admin/inventory", tone: "amber" },
-] as const;
-
 export default function AdminOverview() {
   const weekTotal = TREND.reduce((s, d) => s + d.groceries + d.move, 0);
+  const { verifications } = useStore();
+  const waiting = verifications.filter((v) => v.status === "pending").length;
+
+  const ATTENTION = [
+    {
+      icon: "shield",
+      label: waiting ? `${waiting} ID check${waiting === 1 ? "" : "s"} waiting for review` : "No ID checks waiting",
+      href: "/admin/verifications",
+      tone: waiting ? "amber" : "green",
+    },
+    { icon: "flag", label: "1 open Buy-for-me dispute", href: "/admin/disputes", tone: "red" },
+    { icon: "store", label: "29 SKUs below reorder level", href: "/admin/inventory", tone: "amber" },
+  ] as const;
 
   return (
     <div className="p-5 lg:p-8">
@@ -54,6 +63,19 @@ export default function AdminOverview() {
         <Stat label="Active customers" value="3,891" icon="users" tone="green" delta="+6%" />
         <Stat label="Verified transporters" value="128" icon="truck" tone="amber" delta="+11" />
       </div>
+
+      <Card className="p-4 lg:p-5 mb-6">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <h2 className="font-semibold">How RushBox works</h2>
+            <p className="text-xs text-ink-500">
+              Interactive 3D map — the players, a grocery order, a Move job, the money, the apps
+            </p>
+          </div>
+          <Badge tone="brand">3D</Badge>
+        </div>
+        <SystemMap compact />
+      </Card>
 
       <div className="grid gap-4 lg:grid-cols-3 mb-6">
         <Card className="p-5 lg:col-span-2">
@@ -82,7 +104,9 @@ export default function AdminOverview() {
                   className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                     a.tone === "red"
                       ? "bg-red-100 text-red-600"
-                      : "bg-amber-100 text-amber-700"
+                      : a.tone === "green"
+                        ? "bg-emerald-100 text-emerald-600"
+                        : "bg-amber-100 text-amber-700"
                   }`}
                 >
                   <Icon name={a.icon} className="w-4 h-4" />

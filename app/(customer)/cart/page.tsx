@@ -6,12 +6,10 @@ import { QtyStepper } from "@/components/product";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
 import { ProductImage } from "@/components/Emoji";
-
-const DELIVERY_FEE = 1.5;
-const FREE_OVER = 20;
+import { DeliveryBill, DeliveryBlocker } from "@/components/DeliveryBill";
 
 export default function Cart() {
-  const { cart, cartTotal, setQty, clearCart, productById } = useStore();
+  const { cart, cartTotal, setQty, clearCart, productById, deliveryQuote } = useStore();
 
   if (!cart.length) {
     return (
@@ -27,8 +25,8 @@ export default function Cart() {
     );
   }
 
-  const fee = cartTotal >= FREE_OVER ? 0 : DELIVERY_FEE;
-  const total = cartTotal + fee;
+  const total = cartTotal + deliveryQuote.fee;
+  const blocked = deliveryQuote.belowMinimum !== null || deliveryQuote.outOfRange;
 
   return (
     <div>
@@ -80,51 +78,26 @@ export default function Cart() {
 
         <Card className="p-4">
           <h2 className="font-semibold text-sm mb-3">Bill summary</h2>
-          <Row label="Item total" value={money(cartTotal)} />
-          <Row
-            label="Delivery fee"
-            value={fee === 0 ? "FREE" : money(fee)}
-            highlight={fee === 0}
-          />
-          {fee > 0 ? (
-            <p className="text-[11px] text-brand-600 font-medium mt-1">
-              Add {money(FREE_OVER - cartTotal)} more for free delivery
-            </p>
-          ) : null}
-          <div className="border-t border-ink-100 mt-3 pt-3 flex justify-between font-bold">
-            <span>To pay</span>
-            <span>{money(total)}</span>
-          </div>
+          <DeliveryBill subtotal={cartTotal} quote={deliveryQuote} />
         </Card>
+
+        <DeliveryBlocker quote={deliveryQuote} />
       </main>
 
       <div className="fixed bottom-[68px] inset-x-0 z-40 mx-auto max-w-[520px] px-4">
-        <Button href="/checkout" variant="primary" size="lg" full>
-          Checkout · {money(total)}
-          <Icon name="chevron" className="w-4 h-4" />
-        </Button>
+        {blocked ? (
+          <Button variant="primary" size="lg" full disabled>
+            {deliveryQuote.outOfRange
+              ? "Outside delivery area"
+              : `Add ${money(deliveryQuote.belowMinimum ?? 0)} to order`}
+          </Button>
+        ) : (
+          <Button href="/checkout" variant="primary" size="lg" full>
+            Checkout · {money(total)}
+            <Icon name="chevron" className="w-4 h-4" />
+          </Button>
+        )}
       </div>
-    </div>
-  );
-}
-
-function Row({
-  label,
-  value,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-}) {
-  return (
-    <div className="flex justify-between text-sm py-1">
-      <span className="text-ink-500">{label}</span>
-      <span
-        className={highlight ? "font-semibold text-emerald-600" : "text-ink-800"}
-      >
-        {value}
-      </span>
     </div>
   );
 }

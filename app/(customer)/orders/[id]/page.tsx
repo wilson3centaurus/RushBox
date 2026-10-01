@@ -160,6 +160,14 @@ function OrderTracking({ params }: { params: Promise<{ id: string }> }) {
                 );
               })}
             </div>
+            {order.deliveryFee !== undefined ? (
+              <div className="border-t border-ink-100 mt-3 pt-3 flex justify-between text-sm text-ink-500">
+                <span>Delivery</span>
+                <span className={order.deliveryFee === 0 ? "font-semibold text-emerald-600" : ""}>
+                  {order.deliveryFee === 0 ? "FREE" : money(order.deliveryFee)}
+                </span>
+              </div>
+            ) : null}
             <div className="border-t border-ink-100 mt-3 pt-3 flex justify-between font-bold">
               <span>Total paid</span>
               <span>{money(order.total)}</span>

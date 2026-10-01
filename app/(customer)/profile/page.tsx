@@ -6,6 +6,7 @@ import { Avatar, Badge, Card, TopBar } from "@/components/ui";
 import { Icon, type IconName } from "@/components/icons";
 import { useStore } from "@/lib/store";
 import { money } from "@/lib/format";
+import { STATUS_COPY } from "@/lib/verification";
 
 const ACCOUNT: { href: string; icon: IconName; label: string; sub: string }[] = [
   { href: "/orders", icon: "orders", label: "Your orders", sub: "Groceries & medicine" },
@@ -22,28 +23,56 @@ const STAFF: { href: string; icon: IconName; label: string; sub: string }[] = [
 ];
 
 export default function Profile() {
-  const { user, orders, jobs, signOut } = useStore();
+  const { user, orders, jobs, signOut, verification } = useStore();
   const router = useRouter();
   const spent = orders.reduce((s, o) => s + o.total, 0);
+  const status = verification?.status ?? "unverified";
 
   return (
     <div>
-      <TopBar title="Account" />
+      <TopBar
+        title="Account"
+        right={
+          user ? (
+            <Link href="/profile/edit" className="text-sm font-semibold text-brand-600 px-2 py-1">
+              Edit
+            </Link>
+          ) : null
+        }
+      />
 
       <main className="px-5 py-5 space-y-5">
         <Card className="p-5">
           <div className="flex items-center gap-4">
-            <Avatar initials={user?.initials ?? "G"} className="w-16 h-16 text-lg" />
+            <Link href="/profile/edit" className="relative shrink-0" aria-label="Edit profile">
+              <Avatar
+                initials={user?.initials ?? "G"}
+                src={user?.avatar}
+                className="w-16 h-16 text-lg"
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 w-6 h-6 rounded-full bg-white border border-ink-200 text-ink-600 flex items-center justify-center">
+                <Icon name="camera" className="w-3.5 h-3.5" />
+              </span>
+            </Link>
             <div className="min-w-0">
-              <p className="font-bold text-lg leading-tight">
+              <p className="font-bold text-lg leading-tight truncate">
                 {user?.name ?? "Guest"}
               </p>
               <p className="text-sm text-ink-500">
                 {user?.phone ?? "Not signed in"}
               </p>
-              <Badge tone="brand" className="mt-1.5">
-                RushBox member
-              </Badge>
+              <Link href="/profile/verify" className="inline-block mt-1.5">
+                {status === "verified" ? (
+                  <Badge tone="green">
+                    <Icon name="shield" className="w-3 h-3" />
+                    Verified
+                  </Badge>
+                ) : status === "unverified" ? (
+                  <Badge tone="brand">Verify your ID →</Badge>
+                ) : (
+                  <Badge tone={STATUS_COPY[status].tone}>ID: {STATUS_COPY[status].label}</Badge>
+                )}
+              </Link>
             </div>
           </div>
 
@@ -53,6 +82,22 @@ export default function Profile() {
             <Metric value={money(spent)} label="Spent" />
           </div>
         </Card>
+
+        <section>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-ink-400 mb-2 px-1">
+            Your details
+          </h2>
+          <Card className="divide-y divide-ink-100 overflow-hidden">
+            <Row href="/profile/edit" icon="edit" label="Edit profile" sub="Name, photo and email" />
+            <Row href="/profile/phone" icon="phone" label="Phone number" sub={user?.phone ?? "—"} />
+            <Row
+              href="/profile/verify"
+              icon="id"
+              label="Identity verification"
+              sub={status === "unverified" ? "Optional · unlocks cash on delivery" : STATUS_COPY[status].label}
+            />
+          </Card>
+        </section>
 
         <section>
           <h2 className="text-xs font-semibold uppercase tracking-wide text-ink-400 mb-2 px-1">
@@ -91,7 +136,12 @@ export default function Profile() {
           Sign out
         </button>
 
-        <p className="text-center text-[11px] text-ink-300">RushBox v0.1.0</p>
+        <p className="text-center text-[11px] text-ink-300">
+          RushBox v0.2.0 ·{" "}
+          <Link href="/credits" className="underline">
+            Photo credits
+          </Link>
+        </p>
       </main>
     </div>
   );

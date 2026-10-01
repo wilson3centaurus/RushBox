@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Avatar, Badge, Card, Logo } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { useStore } from "@/lib/store";
-import { Emoji, ProductImage } from "@/components/Emoji";
+import { CategoryImage, Emoji, ProductImage } from "@/components/Emoji";
 import { etaLabel, money, statusLabel } from "@/lib/format";
 
 export default function Home() {
@@ -125,11 +125,11 @@ export default function Home() {
                 href={`/groceries/${c.slug}`}
                 className="flex flex-col items-center gap-1.5"
               >
-                <span
-                  className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${c.tile} flex items-center justify-center`}
-                >
-                  <Emoji char={c.emoji} className="w-7 h-7" />
-                </span>
+                <CategoryImage
+                  category={c}
+                  className="w-full aspect-square rounded-2xl"
+                  art="w-7 h-7"
+                />
                 <span className="text-[10px] font-medium text-ink-600 text-center leading-tight">
                   {c.name}
                 </span>

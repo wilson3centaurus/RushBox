@@ -27,13 +27,17 @@ actual protection.
 
 ## 2. The schema — already applied
 
-All three migrations are live on the project. Current state:
+All four migrations are live on the project. Current state:
 
-- 14 tables, **row-level security enabled on all 14**, 31 policies
-- 3 dark stores, 10 categories, 43 products seeded
+- 16 tables, **row-level security enabled on all 16**
+- 3 dark stores, 10 categories, 43 products seeded; category and produce photos set
 - RLS helpers in a `private` schema, none reachable as RPC endpoints
+- Two storage buckets: `avatars` (public) and `verification` (private)
 
-Supabase's own security advisors report no outstanding issues from our schema.
+Supabase's security advisor flags one function, `public.rls_auto_enable()`. It
+is Supabase's own (it switches RLS on for new tables) and returns
+`event_trigger`, so it cannot be called as an endpoint. Nothing from our schema
+is flagged.
 
 If you ever rebuild from scratch, run them in order:
 
@@ -42,6 +46,7 @@ If you ever rebuild from scratch, run them in order:
 | `supabase/migrations/0001_schema.sql` | Tables, enums, triggers |
 | `supabase/migrations/0002_policies.sql` | Row-level security — **not optional** |
 | `supabase/migrations/0003_seed.sql` | Categories, 3 stores, 43 products |
+| `supabase/migrations/0004_accounts_pricing.sql` | Pricing settings, ID verification, profile photos, storage buckets, catalogue photos |
 
 `0002` is the one that matters. Without it every table is wide open to anyone
 holding the anon key, which is everyone.
@@ -78,27 +83,70 @@ update profiles set role = 'admin' where phone = '+263771234567';
 
 ---
 
+### What 0004 adds
+
+**Pricing** lives in `app_settings` under the key `pricing` — the delivery fee,
+when delivery is free, small-basket and late-night fees, the delivery radius,
+and the Move commission. Everyone can read it (the cart quotes delivery before
+sign-in); only admins can write it, and each change records who made it.
+
+**ID verification.** Documents are rows in `verification_documents`, pointing
+at files in the private `verification` bucket under `<user id>/`. A user can
+upload and replace their own; every upload goes back to `pending`, and only an
+admin can approve or reject. Nobody can register a file in someone else's
+folder. Admins approve a customer by setting `profiles.id_verified_at`, and a
+driver by setting `transporters.status = 'verified'`.
+
+**It also fixed a hole in 0002**: a transporter could insert or update their own
+row as `verified` (with any trip count) and start bidding unchecked. A trigger
+now lets only staff change status, rating and trips, and sends a verified
+driver back to `pending` if they change vehicle or plate.
+
+**Profile photos** go in the public `avatars` bucket. `profiles.avatar_path`
+holds a path in that bucket, not a URL, so nobody can point their photo at a
+tracking pixel on another site.
+
+### Wiring the app to it
+
+Until phone sign-in is live there is no Supabase session, so the app keeps
+profile edits, ID photos and pricing changes on the device and says so. Once
+auth works:
+
+- **Pricing**: already done — `publishPricing()` writes `app_settings` when an
+  admin session exists.
+- **ID photos**: upload with
+  `` storage.from("verification").upload(`${uid}/${kind}-${Date.now()}.jpg`, blob) ``,
+  then upsert a `verification_documents` row with that path. Staff view them
+  with `createSignedUrl(path, 300)` — never make the bucket public.
+- **Profile photo**: upload to `avatars/${uid}/avatar.jpg`, set
+  `profiles.avatar_path`.
+- **Delivery fee**: recompute it in a database function from `app_settings`
+  when the order is written. The browser's number is for display only.
+
 ## 3. Check the policies hold
 
-`supabase/tests/rls_test.sql` asserts 18 security properties: that one customer
-cannot read another's orders or wallet, that a transporter cannot see rival
-bids or bid while unverified, that nobody can promote themselves to admin, and
-that an anonymous visitor can browse the catalogue but reach no customer data.
+`supabase/tests/rls_test.sql` asserts 38 security properties, including: one
+customer cannot read another's orders, wallet or ID documents; a transporter
+cannot see rival bids, bid while unverified, or mark themselves verified;
+nobody can promote themselves to admin or change pricing; uploads cannot land
+in someone else's folder; and an anonymous visitor can browse the catalogue but
+reach no customer data.
 
 It writes fixture rows, so **never run it against production**. Use a branch
 database (Supabase → Branches) or a local Postgres — `00_local_stub.sql`
-supplies the `auth` schema and the three Supabase roles:
+supplies the `auth` and `storage` schemas and the three Supabase roles:
 
 ```bash
 createdb rbx_test
 psql -d rbx_test -f supabase/tests/00_local_stub.sql
 psql -d rbx_test -f supabase/migrations/0001_schema.sql
 psql -d rbx_test -f supabase/migrations/0002_policies.sql
+psql -d rbx_test -f supabase/migrations/0004_accounts_pricing.sql
 psql -d rbx_test -f supabase/tests/rls_test.sql
 ```
 
 It prints `ALL RLS TESTS PASSED`, or raises on the first property that breaks.
-Re-run it whenever you touch a policy — it has already caught two real bugs.
+Re-run it whenever you touch a policy — it has already caught three real bugs.
 
 ---
 
@@ -129,6 +177,7 @@ SUPABASE_SERVICE_ROLE_KEY=<the rotated one>
 Flipping `NEXT_PUBLIC_USE_MOCK_DATA` to `false` makes `getSupabase()` return a
 real client instead of null.
 
-The screens still read from `lib/mock/`. Swapping those for Supabase queries is
-the next piece of work — do it one surface at a time and keep the mock flag
-working, so the team can keep building UI while the backend lands.
+With the flag off, the catalogue and pricing come from Supabase; orders, jobs
+and accounts still live on the device until auth is wired. Move them over one
+surface at a time and keep the mock flag working, so the team can keep building
+UI while the backend lands.

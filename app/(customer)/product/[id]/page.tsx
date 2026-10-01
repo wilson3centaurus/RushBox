@@ -6,7 +6,7 @@ import { Badge, Button, Card, TopBar, EmptyState } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { QtyStepper, ProductGrid } from "@/components/product";
 import { useStore } from "@/lib/store";
-import { money } from "@/lib/format";
+import { money, moneyShort } from "@/lib/format";
 import { ProductImage } from "@/components/Emoji";
 
 export default function ProductDetail({
@@ -15,7 +15,10 @@ export default function ProductDetail({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { cart, addToCart, setQty, products, categories, productById } = useStore();
+  const { cart, addToCart, setQty, products, categories, productById, pricing } = useStore();
+  const freeDelivery = pricing.delivery.freeOverEnabled
+    ? `Free delivery on orders over ${moneyShort(pricing.delivery.freeThreshold)}`
+    : `Delivery from ${moneyShort(pricing.delivery.baseFee)}, in about 30 minutes`;
   const product = productById(id);
 
   if (!product) {
@@ -97,7 +100,7 @@ export default function ProductDetail({
               {[
                 "Stocked in our own store, not a third-party shop",
                 "Quality checked before it leaves the warehouse",
-                "Free delivery on orders over $20",
+                freeDelivery,
               ].map((t) => (
                 <li key={t} className="flex gap-2.5 text-sm text-ink-600">
                   <Icon

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge, Button, Card, Stat, TopBar } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { money } from "@/lib/format";
+import { useStore } from "@/lib/store";
 
 const RANGES = ["Today", "This week", "This month"];
 
@@ -25,6 +26,7 @@ const TRIPS = [
 ];
 
 export default function Earnings() {
+  const { pricing } = useStore();
   const [range, setRange] = useState("This week");
   const max = Math.max(...BARS.map((b) => b.value));
   const total = BARS.reduce((s, b) => s + b.value, 0);
@@ -55,7 +57,7 @@ export default function Earnings() {
             {range} earnings
           </p>
           <p className="text-4xl font-bold mt-1.5">{money(total)}</p>
-          <p className="text-xs text-white/60 mt-1">After 15% RushBox commission</p>
+          <p className="text-xs text-white/60 mt-1">After {pricing.move.commissionPct}% RushBox commission</p>
           <Button variant="primary" size="sm" className="mt-4" full>
             Cash out to EcoCash
           </Button>

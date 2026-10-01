@@ -8,6 +8,7 @@ import { money } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
 import { OPEN_JOB_FEED, vehicleById } from "@/lib/mock/data";
 import { Emoji } from "@/components/Emoji";
+import { useStore } from "@/lib/store";
 import type { JobType } from "@/lib/types";
 
 const TYPE_META: Record<JobType, { emoji: string; label: string }> = {
@@ -21,6 +22,10 @@ const FILTERS = ["All", "Cargo", "Parcel", "Buy for me"];
 export default function DriverFeed() {
   const [online, setOnline] = useState(true);
   const [filter, setFilter] = useState("All");
+  const { user, verification } = useStore();
+  const status = verification?.status ?? "unverified";
+  const verified = status === "verified";
+  const vehicle = verification?.vehicle;
 
   const jobs = OPEN_JOB_FEED.filter((j) =>
     filter === "All" ? true : TYPE_META[j.type].label === filter,
@@ -32,9 +37,13 @@ export default function DriverFeed() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs text-white/50 uppercase tracking-wider font-semibold">
-              Tendai Moyo
+              {user?.name ?? "Transporter"}
             </p>
-            <p className="font-semibold">Toyota Hilux · 🛻 Bakkie</p>
+            <p className="font-semibold">
+              {vehicle
+                ? `${vehicle.model} · ${vehicleById(vehicle.type)?.emoji ?? ""} ${vehicleById(vehicle.type)?.label ?? ""}`
+                : "No vehicle added yet"}
+            </p>
           </div>
           <button
             onClick={() => setOnline((o) => !o)}
@@ -50,13 +59,44 @@ export default function DriverFeed() {
         </div>
 
         <div className="grid grid-cols-3 gap-3 mt-5">
-          <MiniStat label="Today" value={money(64)} />
-          <MiniStat label="Trips" value="4" />
-          <MiniStat label="Rating" value="4.8" />
+          <MiniStat label="Today" value={verified ? money(64) : money(0)} />
+          <MiniStat label="Trips" value={verified ? "4" : "0"} />
+          <MiniStat label="Rating" value={verified ? "4.8" : "New"} />
         </div>
       </header>
 
       <main className="px-5 py-5 space-y-4">
+        {!verified ? (
+          <Link href="/driver/onboarding" className="block">
+            <Card
+              className={`p-4 flex items-center gap-3 ${
+                status === "pending"
+                  ? "bg-amber-50 border-amber-200"
+                  : status === "rejected"
+                    ? "bg-red-50 border-red-200"
+                    : "bg-brand-50 border-brand-200"
+              }`}
+            >
+              <Icon name="shield" className="w-6 h-6 shrink-0 text-ink-700" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold">
+                  {status === "pending"
+                    ? "Your documents are being checked"
+                    : status === "rejected"
+                      ? "Verification needs attention"
+                      : "Get verified to start bidding"}
+                </p>
+                <p className="text-xs text-ink-600">
+                  {status === "pending"
+                    ? "Usually within 24 hours. You can browse jobs meanwhile."
+                    : "ID, driver's licence and vehicle — about five minutes."}
+                </p>
+              </div>
+              <Icon name="chevron" className="w-4 h-4 text-ink-400 shrink-0" />
+            </Card>
+          </Link>
+        ) : null}
+
         {!online ? (
           <Card className="p-4 flex items-center gap-3 bg-amber-50 border-amber-200">
             <Icon name="bell" className="w-5 h-5 text-amber-600 shrink-0" />

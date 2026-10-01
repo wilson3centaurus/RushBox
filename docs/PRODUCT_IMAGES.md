@@ -1,13 +1,38 @@
 # Product images
 
-Every product renders through `ProductImage` (`components/Emoji.tsx`), which
-picks the best thing available:
+Every product renders through `ProductImage` and every category through
+`CategoryImage` (both in `components/Emoji.tsx`), which pick the best thing
+available:
 
-1. `product.image` — a real photo, if the product has one
+1. `image` — a real photo, if it has one
 2. otherwise, bundled vector artwork on the category's tint
 
 If a photo URL 404s or fails to load, the tile falls back to the artwork
 instead of showing a broken image, so the grid never breaks.
+
+## The photos we ship
+
+All 10 categories and 20 unbranded products (fresh produce, eggs, bread, rice,
+sugar and so on) have real photos in `public/photos/`. They are Flickr photos
+from Google's [Open Images](https://storage.googleapis.com/openimages/web/index.html)
+dataset, licensed **CC BY 2.0**, cropped to the labelled object and resized —
+each one picked and checked by eye.
+
+CC BY needs credit, so every photo's author, title and source link is listed in
+the app at **Account → Photo credits** (`/credits`, from `lib/photo-credits.ts`).
+
+To change or add one, edit `scripts/photo-picks.json` and rebuild — it
+regenerates the images and the credits list together:
+
+```bash
+pip install pillow
+python3 scripts/build-photos.py
+```
+
+**Branded products (Mazoe, Coca-Cola, Dairibord, Lobels…) deliberately keep the
+artwork.** A generic photo of "a juice" would show customers something other
+than what they will receive. Those need real packshots — photograph the stock
+in the dark store, or ask suppliers for theirs — uploaded per product as below.
 
 ## Adding real photos
 

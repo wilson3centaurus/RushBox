@@ -89,3 +89,13 @@ body {
 .animate-pulse-ring {
   animation: rb-pulse-ring 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
+
+/* System map: on small screens drop secondary labels and let sub-lines wrap,
+   so the labels that matter are not buried. */
+.sm-compact .sm-optional {
+  display: none !important;
+}
+.sm-compact .sm-sub {
+  max-width: 7.5rem;
+  white-space: normal;
+}

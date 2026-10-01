@@ -5,7 +5,7 @@ import { useStore } from "@/lib/store";
 import { TopBar, Card } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { ProductGrid } from "@/components/product";
-import { Emoji } from "@/components/Emoji";
+import { CategoryImage } from "@/components/Emoji";
 import { CartBar } from "@/components/CartBar";
 
 export default function Groceries() {
@@ -34,12 +34,11 @@ export default function Groceries() {
           <div className="grid grid-cols-2 gap-3">
             {categories.map((c) => (
               <Link key={c.slug} href={`/groceries/${c.slug}`}>
-                <Card className="p-3 flex items-center gap-3">
-                  <span
-                    className={`w-11 h-11 rounded-xl bg-gradient-to-br ${c.tile} flex items-center justify-center shrink-0`}
-                  >
-                    <Emoji char={c.emoji} className="w-6 h-6" />
-                  </span>
+                <Card className="p-2.5 flex items-center gap-3">
+                  <CategoryImage
+                    category={c}
+                    className="w-12 h-12 rounded-xl shrink-0"
+                  />
                   <div className="min-w-0">
                     <p className="text-sm font-semibold leading-tight">
                       {c.name}

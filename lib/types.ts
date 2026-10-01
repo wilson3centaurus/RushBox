@@ -7,6 +7,8 @@ export type User = {
   email?: string;
   role: Role;
   initials: string;
+  /** Profile photo. A data URL in demo mode; a storage URL once auth is live. */
+  avatar?: string;
 };
 
 export type Category = {
@@ -15,6 +17,8 @@ export type Category = {
   emoji: string;
   /** Tailwind gradient stops for the category tile, e.g. "from-green-50 to-green-100". */
   tile: string;
+  /** Photo URL for the category tile. Falls back to the emoji art. */
+  image?: string;
 };
 
 export type Product = {
@@ -44,6 +48,10 @@ export type GroceryStatus =
 export type GroceryOrder = {
   id: string;
   lines: CartLine[];
+  /** Items only. Absent on orders placed before fees were itemised. */
+  subtotal?: number;
+  /** Delivery and any surcharges, as quoted at checkout. */
+  deliveryFee?: number;
   total: number;
   status: GroceryStatus;
   address: string;

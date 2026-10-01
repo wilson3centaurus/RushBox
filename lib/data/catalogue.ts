@@ -5,13 +5,14 @@ import type { Category, Product } from "@/lib/types";
 /**
  * Row shapes as the database actually returns them, taken from the generated
  * Supabase types. Narrow on purpose — only the columns the catalogue reads.
- * Run `npm run types:gen` for the full generated `Database` type.
+ * For the full `Database` type: `supabase gen types typescript --project-id eyslfrpacrkklwqpsqll`.
  */
 type CategoryRow = {
   slug: string;
   name: string;
   emoji: string;
   tile: string;
+  image: string | null;
   sort: number;
 };
 
@@ -52,6 +53,7 @@ function toCategory(row: CategoryRow): Category {
     name: row.name,
     emoji: row.emoji,
     tile: row.tile,
+    image: row.image ?? undefined,
   };
 }
 
@@ -82,7 +84,7 @@ export async function loadCatalogue(): Promise<Catalogue> {
   if (!supabase) return MOCK_CATALOGUE;
 
   const [categories, products] = await Promise.all([
-    supabase.from("categories").select("slug,name,emoji,tile,sort").order("sort"),
+    supabase.from("categories").select("slug,name,emoji,tile,image,sort").order("sort"),
     supabase
       .from("products")
       .select("id,name,category,price,was_price,unit,emoji,image,store_id,stock,tags")

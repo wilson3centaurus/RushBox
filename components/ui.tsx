@@ -276,11 +276,24 @@ export function Rating({ value }: { value: number }) {
 
 export function Avatar({
   initials,
+  src,
   className = "w-10 h-10",
 }: {
   initials: string;
+  /** Profile photo; initials are shown when there is none. */
+  src?: string;
   className?: string;
 }) {
+  if (src) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- data URL or storage URL chosen by the user
+      <img
+        src={src}
+        alt=""
+        className={`${className} rounded-full object-cover shrink-0 bg-ink-100`}
+      />
+    );
+  }
   return (
     <div
       className={`${className} rounded-full bg-ink-900 text-white font-semibold flex items-center justify-center text-sm shrink-0`}

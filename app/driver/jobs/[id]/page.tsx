@@ -8,6 +8,7 @@ import { MapView } from "@/components/MapView";
 import { money } from "@/lib/format";
 import { TimeAgo } from "@/components/TimeAgo";
 import { OPEN_JOB_FEED, vehicleById } from "@/lib/mock/data";
+import { useStore } from "@/lib/store";
 
 export default function DriverJob({
   params,
@@ -19,6 +20,9 @@ export default function DriverJob({
   const job = OPEN_JOB_FEED.find((j) => j.id === id);
   const [bid, setBid] = useState(job?.offer ?? 10);
   const [sent, setSent] = useState(false);
+  const { pricing, verification } = useStore();
+  const commission = pricing.move.commissionPct;
+  const verified = verification?.status === "verified";
 
   if (!job) {
     return (
@@ -34,7 +38,7 @@ export default function DriverJob({
     );
   }
 
-  const payout = bid * 0.85;
+  const payout = bid * (1 - commission / 100);
 
   return (
     <div>
@@ -148,7 +152,7 @@ export default function DriverJob({
 
           <div className="mt-4 pt-3 border-t border-ink-100 space-y-1 text-sm">
             <div className="flex justify-between text-ink-500">
-              <span>RushBox commission (15%)</span>
+              <span>RushBox commission ({commission}%)</span>
               <span>−{money(bid - payout)}</span>
             </div>
             <div className="flex justify-between font-bold">
@@ -160,18 +164,27 @@ export default function DriverJob({
       </main>
 
       <div className="fixed bottom-[68px] inset-x-0 z-40 mx-auto max-w-[520px] px-4">
-        <Button
-          onClick={() => {
-            setSent(true);
-            setTimeout(() => router.push("/driver"), 1000);
-          }}
-          disabled={sent}
-          variant="primary"
-          size="lg"
-          full
-        >
-          {sent ? "Bid sent ✓" : `Send bid · ${money(bid)}`}
-        </Button>
+        {verified ? (
+          <Button
+            onClick={() => {
+              setSent(true);
+              setTimeout(() => router.push("/driver"), 1000);
+            }}
+            disabled={sent}
+            variant="primary"
+            size="lg"
+            full
+          >
+            {sent ? "Bid sent ✓" : `Send bid · ${money(bid)}`}
+          </Button>
+        ) : (
+          <Button href="/driver/onboarding" variant="dark" size="lg" full>
+            <Icon name="shield" className="w-4 h-4" />
+            {verification?.status === "pending"
+              ? "Bidding opens once you're verified"
+              : "Get verified to bid"}
+          </Button>
+        )}
       </div>
     </div>
   );
