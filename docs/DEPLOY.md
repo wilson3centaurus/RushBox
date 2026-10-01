@@ -1,7 +1,10 @@
 # Deploying RushBox
 
-No config files needed — Vercel detects Next.js automatically. This is the
-whole process.
+**Live: https://rushbox-three.vercel.app**
+
+Vercel project `rushbox`, deploying from `claude/remote-project-work-7wpinl`
+against the Supabase Cloud project. Already set up — the rest of this page is
+for rebuilding it or changing how it works.
 
 ## 1. Deploy to Vercel
 
@@ -32,9 +35,12 @@ deploy and test the whole UI before the backend exists.
 
 ### Latency
 
-Vercel defaults functions to Washington DC, which is a slow round trip from
-Zimbabwe. In **Settings → Functions**, change the region to the closest
-available one — Cape Town if your plan offers it, otherwise Frankfurt or Paris.
+The project currently runs functions in **iad1 (Washington DC)**, which is a
+slow round trip from Zimbabwe. In **Settings → Functions**, move it to the
+closest region your plan offers — Cape Town if available, otherwise Frankfurt
+or Paris. Supabase sits in `eu-north-1` (Stockholm), so Frankfurt also shortens
+the hop to the database.
+
 Most pages are static and served from the CDN edge regardless, so this only
 affects the dynamic routes.
 
@@ -49,24 +55,29 @@ It launches fullscreen with the RushBox icon, no browser chrome, and works
 offline for pages already visited. On iOS it's Share → Add to Home Screen
 (Safari only).
 
-## 3. APK, later
+## 3. APK via Bubblewrap
 
-A packaged APK wraps the deployed PWA — it does not replace it, so step 1 has
-to happen first. Once you have a live https URL:
+Run this on your own machine — it needs the Android SDK, which is a few hundred
+megabytes and cannot be fetched from a sandboxed build environment.
 
 ```bash
 npm i -g @bubblewrap/cli
-bubblewrap init --manifest=https://<your-url>/manifest.webmanifest
+bubblewrap init --manifest=https://rushbox-three.vercel.app/manifest.webmanifest
 bubblewrap build
 ```
 
-That needs the Android SDK and a signing keystore on the machine you run it on.
-For Play Store distribution you also need to host
-`.well-known/assetlinks.json` so the app opens without a browser address bar —
-Bubblewrap prints the file for you.
+`bubblewrap init` offers to download the JDK and Android SDK for you on first
+run; say yes. It then asks for a signing keystore — keep that file and its
+password somewhere safe, because Play Store updates must be signed with the
+same key, and losing it means you cannot update the listing.
 
-Worth saying plainly: for testing, the installed PWA and the APK look and behave
-the same. The APK only matters when you want a Play Store listing.
+For Play Store distribution you also need `.well-known/assetlinks.json` served
+from the domain, so the app opens without a browser address bar. Bubblewrap
+prints the exact file; drop it in `public/.well-known/`.
+
+Worth being plain about this: **a Bubblewrap APK is a browser window pointing at
+the deployed URL.** For testing it looks and behaves exactly like the installed
+PWA. It is only worth building when you want a Play Store listing.
 
 ## Before real data flows
 
